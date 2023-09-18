@@ -14,12 +14,16 @@ locals {
   } : {}
 }
 
+
+# INFO: Not supported attributes
+# - `allowed_principals`
 resource "aws_vpc_endpoint_service" "this" {
   gateway_load_balancer_arns = var.gateway_load_balancer_arns
   network_load_balancer_arns = var.network_load_balancer_arns
 
-  private_dns_name    = var.private_domain
-  acceptance_required = var.acceptance_required
+  private_dns_name           = var.private_domain
+  acceptance_required        = var.acceptance_required
+  supported_ip_address_types = var.supported_ip_address_types
 
   tags = merge(
     {

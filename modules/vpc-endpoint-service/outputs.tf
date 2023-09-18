@@ -43,9 +43,14 @@ output "availability_zones" {
   value       = aws_vpc_endpoint_service.this.availability_zones
 }
 
+output "supported_ip_address_types" {
+  description = "The supported IP address types."
+  value       = aws_vpc_endpoint_service.this.supported_ip_address_types
+}
+
 output "allowed_principals" {
   description = "A list of the ARNs of allowed principals to discover a VPC endpoint service."
-  value       = var.allowed_principals
+  value       = keys(aws_vpc_endpoint_service_allowed_principal.this)
 }
 
 output "manages_vpc_endpoints" {
