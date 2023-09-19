@@ -66,6 +66,50 @@ variable "service_associations" {
   nullable = false
 }
 
+variable "logging_to_cloudwatch" {
+  description = <<EOF
+  (Optional) The configuration to enable access logs to be sent to Amazon CloudWatch Log Group. The service network owner can use the access logs to audit the services in the network. The service network owner will only see access logs from clients and services that are associated with their service network. Access log entries represent traffic originated from VPCs associated with that network. `logging_to_cloudwatch` as defined below.
+    (Optional) `enabled` - Whether to enable access logs to be sent to Amazon CloudWatch Log Group.
+    (Optional) `log_group` - The ARN (Amazon Resource Name) of the CloudWatch Log Group.
+  EOF
+  type = object({
+    enabled   = optional(bool, false)
+    log_group = optional(string)
+  })
+  default  = {}
+  nullable = false
+}
+
+variable "logging_to_kinesis_data_firehose" {
+  description = <<EOF
+  (Optional) The configuration to enable access logs to be sent to Amazon Kinesis Data Firehose. The service network owner can use the access logs to audit the services in the network. The service network owner will only see access logs from clients and services that are associated with their service network. Access log entries represent traffic originated from VPCs associated with that network. `logging_to_kinesis_data_firehose` as defined below.
+    (Optional) `enabled` - Whether to enable access logs to be sent to Amazon Kinesis Data
+  Firehose.
+    (Optional) `delivery_stream` - The ARN (Amazon Resource Name) of the Kinesis Data Firehose
+  delivery stream.
+  EOF
+  type = object({
+    enabled         = optional(bool, false)
+    delivery_stream = optional(string)
+  })
+  default  = {}
+  nullable = false
+}
+
+variable "logging_to_s3" {
+  description = <<EOF
+  (Optional) The configuration to enable access logs to be sent to Amazon S3 Bucket. The service network owner can use the access logs to audit the services in the network. The service network owner will only see access logs from clients and services that are associated with their service network. Access log entries represent traffic originated from VPCs associated with that network. `logging_to_s3` as defined below.
+    (Optional) `enabled` - Whether to enable access logs to be sent to Amazon S3 Bucket.
+    (Optional) `bucket` - The ARN (Amazon Resource Name) of the S3 Bucket.
+  EOF
+  type = object({
+    enabled = optional(bool, false)
+    bucket  = optional(string)
+  })
+  default  = {}
+  nullable = false
+}
+
 variable "tags" {
   description = "(Optional) A map of tags to add to all resources."
   type        = map(string)
@@ -104,4 +148,25 @@ variable "resource_group_description" {
   type        = string
   default     = "Managed by Terraform."
   nullable    = false
+}
+
+
+###################################################
+# Resource Sharing by RAM (Resource Access Manager)
+###################################################
+
+variable "shares" {
+  description = "(Optional) A list of resource shares via RAM (Resource Access Manager)."
+  type = list(object({
+    name = optional(string)
+
+    permissions = optional(set(string), ["AWSRAMPermissionVpcLatticeServiceNetworkReadWrite"])
+
+    external_principals_allowed = optional(bool, false)
+    principals                  = optional(set(string), [])
+
+    tags = optional(map(string), {})
+  }))
+  default  = []
+  nullable = false
 }
