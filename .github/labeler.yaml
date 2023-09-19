@@ -8,6 +8,12 @@
 ":floppy_disk: dx-private-virtual-interface":
 - modules/dx-private-virtual-interface/**/*
 
+":floppy_disk: lattice-service-network":
+- modules/lattice-service-network/**/*
+
+":floppy_disk: lattice-service":
+- modules/lattice-service/**/*
+
 ":floppy_disk: reachability-analyzer-path":
 - modules/reachability-analyzer-path/**/*
 
