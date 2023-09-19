@@ -9,6 +9,8 @@ Terraform module which creates VPC Connectivity related resources (VPC Peering, 
 - [dx-connection](./modules/dx-connection)
 - [dx-gateway](./modules/dx-gateway)
 - [dx-private-virtual-interface](./modules/dx-private-virtual-interface)
+- [lattice-service-network](./modules/lattice-service-network)
+- [lattice-service](./modules/lattice-service)
 - [reachability-analyzer-path](./modules/reachability-analyzer-path)
 - [vpc-endpoint-service](./modules/vpc-endpoint-service)
 - [vpc-gateway-endpoint](./modules/vpc-gateway-endpoint)
@@ -28,6 +30,10 @@ Terraform Modules from [this package](https://github.com/tedilabs/terraform-aws-
     - Endpoint Service
     - Gateway Endpoint
     - Interface Endpoint
+- **AWS VPC Lattice**
+  - Service Network
+  - Service
+  - Target Group
 - **AWS DX (Direct Connect)**
   - Connection
   - Gateway
@@ -40,6 +46,10 @@ Terraform Modules from [this package](https://github.com/tedilabs/terraform-aws-
 
 
 ## Examples
+
+### VPC Lattice
+
+- [lattice-service-network-simple](./examples/lattice-service-network-simple)
 
 ### Network Manager
 
