@@ -8,6 +8,9 @@
 ":floppy_disk: dx-private-virtual-interface":
 - modules/dx-private-virtual-interface/**/*
 
+":floppy_disk: lattice-service-listener":
+- modules/lattice-service-listener/**/*
+
 ":floppy_disk: lattice-service-network":
 - modules/lattice-service-network/**/*
 
