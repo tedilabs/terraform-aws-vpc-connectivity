@@ -9,6 +9,7 @@ Terraform module which creates VPC Connectivity related resources (VPC Peering, 
 - [dx-connection](./modules/dx-connection)
 - [dx-gateway](./modules/dx-gateway)
 - [dx-private-virtual-interface](./modules/dx-private-virtual-interface)
+- [lattice-ip-target-group](./modules/lattice-ip-target-group)
 - [lattice-service-listener](./modules/lattice-service-listener)
 - [lattice-service-network](./modules/lattice-service-network)
 - [lattice-service](./modules/lattice-service)

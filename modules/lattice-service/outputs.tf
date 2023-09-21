@@ -101,7 +101,6 @@ output "listeners" {
   }
 }
 
-
 output "logging" {
   description = <<EOF
   The configuration for access logs of the service.
