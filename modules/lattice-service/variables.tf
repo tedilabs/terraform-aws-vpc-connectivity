@@ -91,7 +91,6 @@ variable "service_network_associations" {
   nullable = false
 }
 
-# TODO:
 variable "listeners" {
   description = <<EOF
   (Optional) The configuration to add one or more listeners for the service. Set up listeners and rules to define how network traffic is routed within the service. A listener is a process that checks for connection requests, using the protocol and port that you configure. Each listener has a default action, and you can optionally define rules to enable content-based routing to the target groups that make up your service. Each block of `listeners` as defined below.
@@ -104,7 +103,26 @@ variable "listeners" {
       (Optional) `destinations` - A list of one or more target groups to route traffic. Only supported if `default_action_type` is `FORWARD`. Each item of `destinations` block as defined below.
         (Required) `target_group` - The ID or ARN of the target group to which to route traffic.
         (Optional) `weight` - The weight to use routing traffic to `target_group`. how requests are distributed to the target group. Only required if you specify multiple target groups for a forward action. For example, if you specify two target groups, one with a weight of 10 and the other with a weight of 20, the target group with a weight of 20 receives twice as many requests as the other target group. Valid value is `0` to `999`. Defaults to `100`.
-    (Optional) `rules` -
+    (Optional) `rules` - A list of rules to enable content-based routing to the target groups that make up the service. Each rule consists of a priority, one or more actions, and one or more conditions. Each block of `rules` block as defined below.
+      (Required) `priority` - The priority assigned to the rule. Each rule for a specific listener must have a unique priority. The lower the priority number the higher the priority.
+      (Optional) `name` - A rule name can describe the purpose of the rule or the type of traffic it is intended to handle. Rule names can't be changed after creation. Defaults to `$(service)-$(priority)`.
+      (Required) `conditions` - The rule conditions. `conditions` block as defined below.
+        (Optional) `method` - The condition of HTTP request method. Valid values are `GET`, `HEAD`, `POST`, `PUT`, `DELETE`, `CONNECT`, `OPTIONS`, `TRACE`, `PATCH`.
+        (Required) `path` - The condition of HTTP request path. `path` block as defined below.
+          (Required) `value` - The path pattern. The pattern must start with `/`.
+          (Optional) `operator` - The operator that you want to use to determine whether an HTTP request path matches the conditions. Valid values are `EXACT`, `PREFIX`. Defaults to `PREFIX`.
+          (Optional) `case_sensitive` - Whether to match the `value` condition using a case-sensitive match. Defaults to `false`.
+        (Optional) `headers` - The condition of HTTP request headers. Each block of `headers` as defined below.
+          (Required) `name` - The name of the HTTP header field.
+          (Required) `value` - The value of the HTTP header field.
+          (Optional) `operator` - The operator that you want to use to determine whether an HTTP header matches the conditions. Valid values are `EXACT`, `PREFIX`, `CONTAINS`. Defaults to `EXACT`.
+          (Optional) `case_sensitive` - Whether to match the `value` condition using a case-sensitive match. Defaults to `false`.
+      (Required) `action_type` - The action type for the rule of the service. Valid values are `FORWARD`, `FIXED_RESPONSE`.
+      (Optional) `action_parameters` - The configuration for the parameters of the routing action. `action_parameters` block as defined below.
+        (Optional) `status_code` - Custom HTTP status code to drop client requests and return a custom HTTP response. Valid values are `404`. Only supported if `action_type` is `FIXED_RESPONSE`.
+        (Optional) `destinations` - A list of one or more target groups to route traffic. Only supported if `action_type` is `FORWARD`. Each item of `destinations` block as defined below.
+          (Required) `target_group` - The ID or ARN of the target group to which to route traffic.
+          (Optional) `weight` - The weight to use routing traffic to `target_group`. how requests are distributed to the target group. Only required if you specify multiple target groups for a forward action. For example, if you specify two target groups, one with a weight of 10 and the other with a weight of 20, the target group with a weight of 20 receives twice as many requests as the other target group. Valid value is `0` to `999`. Defaults to `100`.
     (Optional) `tags` - A map of tags to add to the service listeners.
   EOF
   type = list(object({

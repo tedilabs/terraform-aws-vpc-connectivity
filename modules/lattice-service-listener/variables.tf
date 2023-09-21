@@ -86,8 +86,7 @@ variable "default_action_parameters" {
 
 variable "rules" {
   description = <<EOF
-  (Optional) A list of rules to enable content-based routing to the target groups that make up the service. Each rule consists of a priority, one or more actions, and one or more conditions.
-  Each block of `rules` block as defined below.
+  (Optional) A list of rules to enable content-based routing to the target groups that make up the service. Each rule consists of a priority, one or more actions, and one or more conditions. Each block of `rules` block as defined below.
     (Required) `priority` - The priority assigned to the rule. Each rule for a specific listener must have a unique priority. The lower the priority number the higher the priority.
     (Optional) `name` - A rule name can describe the purpose of the rule or the type of traffic it is intended to handle. Rule names can't be changed after creation. Defaults to `$(service)-$(priority)`.
     (Required) `conditions` - The rule conditions. `conditions` block as defined below.

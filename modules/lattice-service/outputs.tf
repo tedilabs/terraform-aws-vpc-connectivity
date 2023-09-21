@@ -69,7 +69,6 @@ output "service_network_associations" {
   }
 }
 
-# TODO:
 output "listeners" {
   description = <<EOF
   The configuration for listeners of the service.
@@ -79,7 +78,7 @@ output "listeners" {
     `port` - The number of port on which the listener of the service is listening.
     `protocol` - The protocol for the service listener.
     `default_action` - The configuration for default routing action of the service listener.
-    `rules` -
+    `rules` - The list of rules to enable content-based routing to the target groups that make up the service.
     `created_at` - Date and time that the listener was created, specified in ISO-8601 format.
     `updated_at` - Date and time that the listener was last updated, specified in ISO-8601 format.
   EOF
