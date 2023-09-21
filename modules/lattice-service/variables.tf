@@ -125,6 +125,21 @@ variable "listeners" {
       priority = number
       name     = optional(string)
 
+      conditions = object({
+        method = optional(string)
+        path = object({
+          value          = string
+          operator       = optional(string, "PREFIX")
+          case_sensitive = optional(bool, false)
+        })
+        headers = optional(list(object({
+          name           = string
+          value          = string
+          operator       = optional(string, "EXACT")
+          case_sensitive = optional(bool, false)
+        })), [])
+      })
+
       action_type = string
       action_parameters = optional(object({
         status_code = optional(number, 404)

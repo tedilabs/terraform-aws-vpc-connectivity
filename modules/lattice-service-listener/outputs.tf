@@ -48,13 +48,20 @@ output "default_action" {
   }
 }
 
-# TODO: Update Docs
-# TODO: Support Match
 output "rules" {
   description = <<EOF
-  The configuration for default routing action of the service listener.
-    `type` - The type of default routing action.
-    `parameters` - The configuration for the parameters of the default routing action. `default_action_parameters` block as defined below.
+  The list of rules to enable content-based routing to the target groups that make up the service.
+    `id` - Unique identifier for the listener rule.
+    `arn` - The ARN for the listener rule.
+    `priority` - The priority assigned to the listener rule.
+    `name` - The rule name to describe the purpose of the listener rule.
+    `conditions` - The rule conditions.
+      `method` - The condition of HTTP request method.
+      `path` - The condition of HTTP request path.
+      `headers` - The condition of HTTP request headers.
+    `action` - The action for the listener rule.
+      `type` - The action type for the rule of the service.
+      `parameters` - The configuration for the parameters of the routing action.
   EOF
   value = {
     for rule in var.rules :
@@ -63,6 +70,24 @@ output "rules" {
       arn      = aws_vpclattice_listener_rule.this[rule.priority].arn
       priority = rule.priority
       name     = aws_vpclattice_listener_rule.this[rule.priority].name
+
+      conditions = {
+        method = aws_vpclattice_listener_rule.this[rule.priority].match[0].http_match[0].method
+        path = {
+          value          = aws_vpclattice_listener_rule.this[rule.priority].match[0].http_match[0].path_match[0].match[0].exact != null ? aws_vpclattice_listener_rule.this[rule.priority].match[0].http_match[0].path_match[0].match[0].exact : aws_vpclattice_listener_rule.this[rule.priority].match[0].http_match[0].path_match[0].match[0].prefix
+          operator       = aws_vpclattice_listener_rule.this[rule.priority].match[0].http_match[0].path_match[0].match[0].exact != null ? "EXACT" : "PREFIX"
+          case_sensitive = aws_vpclattice_listener_rule.this[rule.priority].match[0].http_match[0].path_match[0].case_sensitive
+        }
+        headers = [
+          for header in aws_vpclattice_listener_rule.this[rule.priority].match[0].http_match[0].header_matches :
+          {
+            name           = header.name
+            value          = header.match[0].exact != null ? header.match[0].exact : (header.match[0].prefix != null ? header.match[0].prefix : header.match[0].contains)
+            operator       = header.match[0].exact != null ? "EXACT" : (header.match[0].prefix != null ? "PREFIX" : "CONTAINS")
+            case_sensitive = header.case_sensitive
+          }
+        ]
+      }
 
       action = {
         type       = rule.action_type
@@ -73,11 +98,6 @@ output "rules" {
             destinations = one(aws_vpclattice_listener_rule.this[rule.priority].action[0].forward[*].target_groups)
           }
         }[rule.action_type]
-      }
-      z = {
-        for k, v in aws_vpclattice_listener_rule.this[rule.priority] :
-        k => v
-        if !contains(["name", "priority", "rule_id", "id", "arn", "listener_identifier", "service_identifier", "tags", "tags_all", "timeouts", "action"], k)
       }
     }
   }
