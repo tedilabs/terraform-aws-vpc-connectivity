@@ -94,22 +94,31 @@ resource "aws_vpclattice_listener_rule" "this" {
 
   match {
     http_match {
-
-      header_matches {
-        name           = "example-header"
-        case_sensitive = false
-
-        match {
-          exact = "example-contains"
-        }
-      }
+      method = each.value.conditions.method
 
       path_match {
-        case_sensitive = true
+        case_sensitive = each.value.conditions.path.case_sensitive
+
         match {
-          prefix = "/example-path"
+          exact  = each.value.conditions.path.operator == "EXACT" ? each.value.conditions.path.value : null
+          prefix = each.value.conditions.path.operator == "PREFIX" ? each.value.conditions.path.value : null
         }
       }
+
+      dynamic "header_matches" {
+        for_each = each.value.conditions.headers
+
+        content {
+          name           = header_matches.value.name
+          case_sensitive = header_matches.value.case_sensitive
+
+          match {
+            exact  = header_matches.value.operator == "EXACT" ? header_matches.value.value : null
+            prefix = header_matches.value.operator == "PREFIX" ? header_matches.value.value : null
+          }
+        }
+      }
+
     }
   }
 
