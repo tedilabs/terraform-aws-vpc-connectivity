@@ -16,12 +16,26 @@ locals {
 
 
 ###################################################
-# Service Network for VPC Lattice
+# Service for VPC Lattice
 ###################################################
 
-resource "aws_vpclattice_service_network" "this" {
+resource "aws_vpclattice_service" "this" {
   name      = var.name
   auth_type = var.auth_type
+
+  custom_domain_name = (var.custom_domain != null
+    ? var.custom_domain.name
+    : null
+  )
+  certificate_arn = (var.custom_domain != null
+    ? var.custom_domain.tls_certificate
+    : null
+  )
+
+  timeouts {
+    create = var.timeouts.create
+    delete = var.timeouts.delete
+  }
 
   tags = merge(
     {
@@ -35,48 +49,22 @@ resource "aws_vpclattice_service_network" "this" {
 
 
 ###################################################
-# VPC Associations of Service Network
-###################################################
-
-resource "aws_vpclattice_service_network_vpc_association" "this" {
-  for_each = {
-    for association in var.vpc_associations :
-    association.vpc => association
-  }
-
-  service_network_identifier = aws_vpclattice_service_network.this.id
-
-  vpc_identifier     = each.key
-  security_group_ids = each.value.security_groups
-
-  tags = merge(
-    {
-      "Name" = "${var.name}/${each.key}"
-    },
-    local.module_tags,
-    var.tags,
-    each.value.tags,
-  )
-}
-
-
-###################################################
-# Service Associations of Service Network
+# Service Network Associations of Service
 ###################################################
 
 resource "aws_vpclattice_service_network_service_association" "this" {
   for_each = {
-    for association in var.service_associations :
+    for association in var.service_network_associations :
     association.name => association
   }
 
-  service_network_identifier = aws_vpclattice_service_network.this.id
+  service_identifier = aws_vpclattice_service.this.id
 
-  service_identifier = each.value.service
+  service_network_identifier = each.value.service_network
 
   tags = merge(
     {
-      "Name" = "${var.name}/${each.key}"
+      "Name" = "${each.key}/${var.name}"
     },
     local.module_tags,
     var.tags,

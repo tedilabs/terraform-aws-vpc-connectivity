@@ -13,6 +13,11 @@ output "name" {
   value       = aws_vpclattice_service_network.this.name
 }
 
+output "description" {
+  description = "The description of the service network."
+  value       = var.description
+}
+
 output "auth_type" {
   description = "The type of authentication and authorization that manages client access to the service network."
   value       = aws_vpclattice_service_network.this.auth_type
@@ -45,14 +50,13 @@ output "vpc_associations" {
 
 output "service_associations" {
   description = <<EOF
-  The list of Service associations with the service network.
+  The list of the service associations with the service network.
     `id` - The ID of the association.
     `arn` - The ARN of the Association.
     `status` - The operations status. Valid Values are `CREATE_IN_PROGRESS`, `ACTIVE`, `DELETE_IN_PROGRESS`, `CREATE_FAILED`, `DELETE_FAILED`.
     `created_by` - The principal that created the association.
 
-    `vpc` - The ID of the VPC.
-    `security_groups` - A list of the IDs of the security groups.
+    `service` - The ARN (Amazon Resource Name) of the service.
   EOF
   value = {
     for name, association in aws_vpclattice_service_network_service_association.this :
@@ -101,11 +105,6 @@ output "logging" {
         log_group = subscription.destination_arn
       }
     ])
-  }
-}
-
-output "z" {
-  value = {
   }
 }
 
