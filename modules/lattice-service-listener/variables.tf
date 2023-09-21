@@ -67,14 +67,14 @@ variable "default_action_parameters" {
 
   validation {
     condition = alltrue([
-      tonumber(try(var.default_action_parameters.status_code, 404)) >= 200,
-      tonumber(try(var.default_action_parameters.status_code, 404)) <= 599,
+      var.default_action_parameters.status_code >= 200,
+      var.default_action_parameters.status_code <= 599,
     ])
     error_message = "Value of `status_code` should be 200 - 599."
   }
   validation {
     condition = alltrue([
-      for destination in try(var.default_action_parameters.destinations, []) :
+      for destination in var.default_action_parameters.destinations :
       alltrue([
         try(destination.weight, 1) >= 0,
         try(destination.weight, 1) <= 999,
@@ -138,6 +138,66 @@ variable "rules" {
   }))
   default  = []
   nullable = false
+
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      alltrue([
+        rule.priority >= 1,
+        rule.priority <= 100,
+      ])
+    ])
+    error_message = "`priority` should be in the range (1 - 100)."
+  }
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      contains(["FORWARD", "FIXED_RESPONSE"], rule.action_type)
+    ])
+    error_message = "Valid values for `action_type` are `FORWARD` and `FIXED_RESPONSE`."
+  }
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      contains(["EXACT", "PREFIX"], rule.conditions.path.operator)
+    ])
+    error_message = "Valid values for `conditions.path.operator` are `EXACT` and `PREFIX`."
+  }
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      alltrue([
+        for header in rule.conditions.headers :
+        contains(["EXACT", "PREFIX", "CONTAINS"], header.operator)
+      ])
+    ])
+    error_message = "Valid values for `conditions.headers[].operator` are `CONTAINS`, `EXACT` and `PREFIX`."
+  }
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      alltrue([
+        rule.action_parameters.status_code >= 200,
+        rule.action_parameters.status_code <= 599,
+      ])
+      if rule.action_type == "FIXED_RESPONSE"
+    ])
+    error_message = "Value of `action_parameter.status_code` should be 200 - 599."
+  }
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      alltrue([
+        for destination in rule.action_parameters.destinations :
+        alltrue([
+          try(destination.weight, 1) >= 0,
+          try(destination.weight, 1) <= 999,
+        ])
+      ])
+      if rule.action_type == "FORWARD"
+    ])
+    error_message = "Value of `action_parameter.destinations[].weight` should be between 0 and 999."
+  }
 }
 
 variable "tags" {
