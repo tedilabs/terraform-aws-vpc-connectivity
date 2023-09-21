@@ -1,7 +1,42 @@
 variable "name" {
-  description = "(Required) The name of the service network."
+  description = "(Required) The name of the service network. The name must be between 3 and 63 characters. You can use lowercase letters, numbers, and hyphens. The name must begin and end with a letter or number. Do not use consecutive hyphens."
   type        = string
   nullable    = false
+
+  validation {
+    condition = alltrue([
+      length(var.name) >= 3,
+      length(var.name) <= 63,
+    ])
+    error_message = "The name must be between 3 and 63 characters."
+  }
+  # INFO: Not support negative lookahead
+  # validation {
+  #   condition     = regex("^(?![-])(?!.*[-]$)(?!.*[-]{2})[a-z0-9-]+$", var.name)
+  #   error_message = "The name must satisfy regular expression pattern: `^(?![-])(?!.*[-]$)(?!.*[-]{2})[a-z0-9-]+$`."
+  # }
+}
+
+
+variable "description" {
+  description = "(Optional) The description of the service network. This creates a tag with a key of `Description` and a value that you specify."
+  type        = string
+  default     = "Managed by Terraform."
+  nullable    = false
+}
+
+variable "policy" {
+  description = <<EOF
+  (Optional) A resource-based permission policy for the service network. The policy must contain the same actions and condition statements as the Amazon Web Services Resource Access Manager permission for sharing services and service networks.
+  EOF
+  type        = string
+  default     = null
+  nullable    = true
+
+  validation {
+    condition     = var.policy == null || can(jsondecode(var.policy))
+    error_message = "The policy string in JSON must not contain newlines or blank lines."
+  }
 }
 
 variable "auth_type" {
@@ -52,7 +87,7 @@ variable "vpc_associations" {
 
 variable "service_associations" {
   description = <<EOF
-  (Optional) The configuration for Service associations with the service network. It enables all the resources within that VPC to be clients and communicate with other services in the service network. Each block of `vpc_associations` as defined below.
+  (Optional) The configuration for the service associations with the service network. To facilitate network client access to your service, you will need to associate your service to the relevant service networks. Only service networks created in the same account, or that have been shared with you (by way of Resource Access Manager), are available for you to create associations with. Each block of `service_associations` as defined below.
     (Required) `name` - The name of the service association.
     (Required) `service` - The ID or ARN (Amazon Resource Name) of the service.
     (Optional) `tags` - A map of tags to add to the service association.
@@ -74,10 +109,18 @@ variable "logging_to_cloudwatch" {
   EOF
   type = object({
     enabled   = optional(bool, false)
-    log_group = optional(string)
+    log_group = optional(string, "")
   })
   default  = {}
   nullable = false
+
+  validation {
+    condition = anytrue([
+      var.logging_to_cloudwatch.enabled == false,
+      var.logging_to_cloudwatch.enabled && startswith(var.logging_to_cloudwatch.log_group, "arn:aws:logs:"),
+    ])
+    error_message = "Valid value for `log_group` must be the ARN (Amazon Resource Name) of the CloudWatch Log Group."
+  }
 }
 
 variable "logging_to_kinesis_data_firehose" {
@@ -90,10 +133,18 @@ variable "logging_to_kinesis_data_firehose" {
   EOF
   type = object({
     enabled         = optional(bool, false)
-    delivery_stream = optional(string)
+    delivery_stream = optional(string, "")
   })
   default  = {}
   nullable = false
+
+  validation {
+    condition = anytrue([
+      var.logging_to_kinesis_data_firehose.enabled == false,
+      var.logging_to_kinesis_data_firehose.enabled && startswith(var.logging_to_kinesis_data_firehose.delivery_stream, "arn:aws:firehose:"),
+    ])
+    error_message = "Valid value for `delivery_stream` must be the ARN (Amazon Resource Name) of the Kinesis Data Firehose Delivery Stream."
+  }
 }
 
 variable "logging_to_s3" {
@@ -104,10 +155,18 @@ variable "logging_to_s3" {
   EOF
   type = object({
     enabled = optional(bool, false)
-    bucket  = optional(string)
+    bucket  = optional(string, "")
   })
   default  = {}
   nullable = false
+
+  validation {
+    condition = anytrue([
+      var.logging_to_s3.enabled == false,
+      var.logging_to_s3.enabled && startswith(var.logging_to_s3.bucket, "arn:aws:s3:"),
+    ])
+    error_message = "Valid value for `bucket` must be the ARN (Amazon Resource Name) of the S3 Bucket."
+  }
 }
 
 variable "tags" {
