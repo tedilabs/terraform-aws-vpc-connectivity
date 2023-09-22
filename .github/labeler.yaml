@@ -8,6 +8,9 @@
 ":floppy_disk: dx-private-virtual-interface":
 - modules/dx-private-virtual-interface/**/*
 
+":floppy_disk: lattice-instance-target-group":
+- modules/lattice-instance-target-group/**/*
+
 ":floppy_disk: lattice-ip-target-group":
 - modules/lattice-ip-target-group/**/*
 
