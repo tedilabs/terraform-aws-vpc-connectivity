@@ -34,7 +34,7 @@ resource "aws_vpclattice_target_group" "this" {
     vpc_identifier = var.vpc
 
     ip_address_type  = var.ip_address_type
-    port             = var.port
+    port             = coalesce(var.port, local.default_ports[var.protocol])
     protocol         = var.protocol
     protocol_version = var.protocol_version
 
@@ -87,6 +87,6 @@ resource "aws_vpclattice_target_group_attachment" "this" {
 
   target {
     id   = each.value.ip_address
-    port = coalesce(each.value.port, local.default_ports[var.protocol])
+    port = coalesce(each.value.port, var.port)
   }
 }

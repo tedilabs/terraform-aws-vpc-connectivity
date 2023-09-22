@@ -58,6 +58,9 @@ Terraform Modules from [this package](https://github.com/tedilabs/terraform-aws-
 ### VPC Lattice
 
 - [lattice-service-network-simple](./examples/lattice-service-network-simple)
+- [lattice-alb-target-group](./examples/lattice-alb-target-group)
+- [lattice-instance-target-group](./examples/lattice-instance-target-group)
+- [lattice-ip-target-group](./examples/lattice-ip-target-group)
 
 ### Network Manager
 
