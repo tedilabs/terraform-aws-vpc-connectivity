@@ -39,25 +39,6 @@ resource "aws_vpclattice_target_group" "this" {
     port             = var.port
     protocol         = var.protocol
     protocol_version = var.protocol_version
-
-    health_check {
-      enabled = var.health_check.enabled
-
-      port             = var.health_check.port
-      protocol         = var.health_check.protocol
-      protocol_version = var.health_check.protocol_version
-      path             = var.health_check.path
-
-      matcher {
-        value = var.health_check.success_codes
-      }
-
-      health_check_interval_seconds = var.health_check.interval
-      health_check_timeout_seconds  = var.health_check.timeout
-
-      healthy_threshold_count   = var.health_check.healthy_threshold
-      unhealthy_threshold_count = var.health_check.unhealthy_threshold
-    }
   }
 
   timeouts {

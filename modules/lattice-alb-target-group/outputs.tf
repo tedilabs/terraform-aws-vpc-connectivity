@@ -43,38 +43,6 @@ output "protocol_version" {
   value       = one(aws_vpclattice_target_group.this.config[*].protocol_version)
 }
 
-output "health_check" {
-  description = <<EOF
-  The health check configuration of the target group.
-    `enabled` - Whether to enable health check.
-    `protocol` - The protocol used when performing health checks on targets.
-    `protocol_version` - The protocol version used when performing health checks on targets.
-    `port` - The port used when performing health checks on targets.
-    `path` - The destination for health checks on the targets.
-    `success_codes` - The HTTP codes to use when checking for a successful response from a target.
-    `interval` - The approximate amount of time between health checks of an individual target.
-    `timeout` - The amount of time, in seconds, during which no response means a failed health check.
-    `healthy_threshold` - The number of consecutive successful health checks required before an unhealthy target is considered healthy.
-    `unhealthy_threshold` - The number of consecutive health check failures required before considering a target unhealthy.
-  EOF
-  value = {
-    enabled = one(aws_vpclattice_target_group.this.config[*].health_check[0].enabled)
-
-    port             = one(aws_vpclattice_target_group.this.config[*].health_check[0].port)
-    protocol         = one(aws_vpclattice_target_group.this.config[*].health_check[0].protocol)
-    protocol_version = one(aws_vpclattice_target_group.this.config[*].health_check[0].protocol_version)
-    path             = one(aws_vpclattice_target_group.this.config[*].health_check[0].path)
-
-    success_codes = one(aws_vpclattice_target_group.this.config[*].health_check[0].matcher[0].value)
-
-    interval = one(aws_vpclattice_target_group.this.config[*].health_check[0].health_check_interval_seconds)
-    timeout  = one(aws_vpclattice_target_group.this.config[*].health_check[0].health_check_timeout_seconds)
-
-    healthy_threshold   = one(aws_vpclattice_target_group.this.config[*].health_check[0].healthy_threshold_count)
-    unhealthy_threshold = one(aws_vpclattice_target_group.this.config[*].health_check[0].unhealthy_threshold_count)
-  }
-}
-
 output "targets" {
   description = <<EOF
   The list of targets of the target group.
