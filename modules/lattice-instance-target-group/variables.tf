@@ -11,7 +11,7 @@ variable "vpc" {
 }
 
 variable "port" {
-  description = "(Optional) The port on which the targets are listening. Valid values are from `1` to `65535`. "
+  description = "(Optional) The port on which the target is listening. Valid values are from `1` to `65535`. If `port` is not specified and `protocol` is `HTTP`, the value will default to `80`. If `port` is not specified and `protocol` is `HTTPS`, the value will default to `443`."
   type        = number
   default     = null
   nullable    = true
@@ -135,6 +135,7 @@ variable "targets" {
     (Required) `name` - The name of the target. This value is only used internally within Terraform code.
     (Required) `instance` - This is the Instance ID for an instance.
     (Optional) `port` - The port on which the target is listening. If `port` is not specified and `protocol` is `HTTP`, the value will default to `80`. If `port` is not specified and `protocol` is `HTTPS`, the value will default to `443`.
+    (Optional) `port` - This port is used for routing traffic to the target, and defaults to the target group port. However, you can override the default and specify a custom port.
   EOF
   type = list(object({
     name     = string
