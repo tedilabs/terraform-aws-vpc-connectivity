@@ -66,7 +66,11 @@ output "service_associations" {
       status     = association.status
       created_by = association.created_by
 
-      service = association.service
+      service = association.service_identifier
+
+      domain        = one(association.dns_entry[*].domain_name)
+      zone_id       = one(association.dns_entry[*].hosted_zone_id)
+      custom_domain = association.custom_domain_name
     }
   }
 }
