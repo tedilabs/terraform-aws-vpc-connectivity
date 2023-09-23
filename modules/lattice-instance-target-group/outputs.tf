@@ -19,7 +19,7 @@ output "vpc" {
 }
 
 output "type" {
-  description = "The type of target group. Always `IP`."
+  description = "The type of target group. Always `INSTANCE`."
   value       = aws_vpclattice_target_group.this.type
 }
 

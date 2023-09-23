@@ -12,6 +12,7 @@ Terraform module which creates VPC Connectivity related resources (VPC Peering, 
 - [lattice-alb-target-group](./modules/lattice-alb-target-group)
 - [lattice-instance-target-group](./modules/lattice-instance-target-group)
 - [lattice-ip-target-group](./modules/lattice-ip-target-group)
+- [lattice-lambda-target-group](./modules/lattice-lambda-target-group)
 - [lattice-service-listener](./modules/lattice-service-listener)
 - [lattice-service-network](./modules/lattice-service-network)
 - [lattice-service](./modules/lattice-service)
@@ -42,6 +43,7 @@ Terraform Modules from [this package](https://github.com/tedilabs/terraform-aws-
     - ALB Target Group
     - Instance Target Group
     - IP Target Group
+    - Lambda Target Group
 - **AWS DX (Direct Connect)**
   - Connection
   - Gateway
@@ -61,6 +63,7 @@ Terraform Modules from [this package](https://github.com/tedilabs/terraform-aws-
 - [lattice-alb-target-group](./examples/lattice-alb-target-group)
 - [lattice-instance-target-group](./examples/lattice-instance-target-group)
 - [lattice-ip-target-group](./examples/lattice-ip-target-group)
+- [lattice-lambda-target-group](./examples/lattice-lambda-target-group)
 
 ### Network Manager
 

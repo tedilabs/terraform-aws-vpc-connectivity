@@ -63,6 +63,6 @@ This module creates following resources.
 | <a name="output_protocol_version"></a> [protocol\_version](#output\_protocol\_version) | The protocol version. |
 | <a name="output_status"></a> [status](#output\_status) | The status of the target group. |
 | <a name="output_targets"></a> [targets](#output\_targets) | The list of targets of the target group.<br>    `name` - The name of the target. This value is only used internally within Terraform code.<br>    `instance` - This is the Instance ID for an instance.<br>    `port` - The port on which the target is listening. |
-| <a name="output_type"></a> [type](#output\_type) | The type of target group. Always `IP`. |
+| <a name="output_type"></a> [type](#output\_type) | The type of target group. Always `INSTANCE`. |
 | <a name="output_vpc"></a> [vpc](#output\_vpc) | The ID of the VPC which the target group belongs to. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
