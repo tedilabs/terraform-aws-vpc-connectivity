@@ -29,6 +29,12 @@
 ":floppy_disk: lattice-service":
 - modules/lattice-service/**/*
 
+":floppy_disk: lattice-shared-service-network":
+- modules/lattice-shared-service-network/**/*
+
+":floppy_disk: lattice-shared-service":
+- modules/lattice-shared-service/**/*
+
 ":floppy_disk: reachability-analyzer-path":
 - modules/reachability-analyzer-path/**/*
 
