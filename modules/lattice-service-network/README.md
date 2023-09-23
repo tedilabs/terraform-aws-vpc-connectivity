@@ -42,6 +42,7 @@ This module creates following resources.
 | [aws_vpclattice_service_network.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpclattice_service_network) | resource |
 | [aws_vpclattice_service_network_service_association.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpclattice_service_network_service_association) | resource |
 | [aws_vpclattice_service_network_vpc_association.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpclattice_service_network_vpc_association) | resource |
+| [aws_vpclattice_service_network.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpclattice_service_network) | data source |
 
 ## Inputs
 
@@ -70,11 +71,13 @@ This module creates following resources.
 |------|-------------|
 | <a name="output_arn"></a> [arn](#output\_arn) | The ARN of the service network. |
 | <a name="output_auth_type"></a> [auth\_type](#output\_auth\_type) | The type of authentication and authorization that manages client access to the service network. |
+| <a name="output_created_at"></a> [created\_at](#output\_created\_at) | Date and time that the service network was created, specified in ISO-8601 format. |
 | <a name="output_description"></a> [description](#output\_description) | The description of the service network. |
 | <a name="output_id"></a> [id](#output\_id) | The ID of the service network. |
 | <a name="output_logging"></a> [logging](#output\_logging) | The configuration for access logs of the service network.<br>  Firehose Delivery Stream, Amazon S3 Bucket.<br>    `cloudwatch` - The configuration for access logs to be sent to Amazon CloudWatch Log Group.<br>    `kinesis_data_firehose` - The configuration for access logs to be sent to Amazon Kinesis Data<br>  Firehose Delivery Stream.<br>    `s3` - The configuration for access logs to be sent to Amazon S3 BUcket. |
 | <a name="output_name"></a> [name](#output\_name) | The name of the service network. |
 | <a name="output_service_associations"></a> [service\_associations](#output\_service\_associations) | The list of the service associations with the service network.<br>    `id` - The ID of the association.<br>    `arn` - The ARN of the Association.<br>    `status` - The operations status. Valid Values are `CREATE_IN_PROGRESS`, `ACTIVE`, `DELETE_IN_PROGRESS`, `CREATE_FAILED`, `DELETE_FAILED`.<br>    `created_by` - The principal that created the association.<br><br>    `service` - The ARN (Amazon Resource Name) of the service. |
 | <a name="output_sharing"></a> [sharing](#output\_sharing) | The configuration for sharing of the Lattice service network.<br>    `status` - An indication of whether the Lattice service network is shared with other AWS accounts, or was shared with the current account by another AWS account. Sharing is configured through AWS Resource Access Manager (AWS RAM). Values are `NOT_SHARED`, `SHARED_BY_ME` or `SHARED_WITH_ME`.<br>    `shares` - The list of resource shares via RAM (Resource Access Manager). |
+| <a name="output_updated_at"></a> [updated\_at](#output\_updated\_at) | Date and time that the service network was last updated, specified in ISO-8601 format. |
 | <a name="output_vpc_associations"></a> [vpc\_associations](#output\_vpc\_associations) | The list of VPC associations with the service network.<br>    `id` - The ID of the association.<br>    `arn` - The ARN of the Association.<br>    `status` - The operations status. Valid Values are `CREATE_IN_PROGRESS`, `ACTIVE`, `DELETE_IN_PROGRESS`, `CREATE_FAILED`, `DELETE_FAILED`.<br>    `created_by` - The principal that created the association.<br><br>    `vpc` - The ID of the VPC.<br>    `security_groups` - A list of the IDs of the security groups. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

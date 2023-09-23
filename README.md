@@ -16,6 +16,8 @@ Terraform module which creates VPC Connectivity related resources (VPC Peering, 
 - [lattice-service-listener](./modules/lattice-service-listener)
 - [lattice-service-network](./modules/lattice-service-network)
 - [lattice-service](./modules/lattice-service)
+- [lattice-shared-service-network](./modules/lattice-shared-service-network)
+- [lattice-shared-service](./modules/lattice-shared-service)
 - [reachability-analyzer-path](./modules/reachability-analyzer-path)
 - [vpc-endpoint-service](./modules/vpc-endpoint-service)
 - [vpc-gateway-endpoint](./modules/vpc-gateway-endpoint)
