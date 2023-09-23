@@ -17,6 +17,9 @@
 ":floppy_disk: lattice-ip-target-group":
 - modules/lattice-ip-target-group/**/*
 
+":floppy_disk: lattice-lambda-target-group":
+- modules/lattice-lambda-target-group/**/*
+
 ":floppy_disk: lattice-service-listener":
 - modules/lattice-service-listener/**/*
 
