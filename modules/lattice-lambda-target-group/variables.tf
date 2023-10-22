@@ -4,6 +4,18 @@ variable "name" {
   nullable    = false
 }
 
+variable "lambda_event_structure_version" {
+  description = "(Optional) The version of the event structure that the Lambda function receives. Valid values are `V1` are `V2`. Defaults to `V2`."
+  type        = string
+  default     = "V2"
+  nullable    = false
+
+  validation {
+    condition     = contains(["V1", "V2"], var.lambda_event_structure_version)
+    error_message = "Valid values for `lambda_event_structure_version` are `V1` and `V2`."
+  }
+}
+
 variable "targets" {
   description = <<EOF
   (Optional) A list of targets to add to the target group. Each value of `targets` block as defined below.
