@@ -27,8 +27,9 @@ locals {
 ###################################################
 
 # INFO: Not supported attributes
-# - `config.ip_address_type`
 # - `config.health_check`
+# - `config.ip_address_type`
+# - `config.lambda_event_structure_version`
 resource "aws_vpclattice_target_group" "this" {
   name = var.name
   type = "ALB"

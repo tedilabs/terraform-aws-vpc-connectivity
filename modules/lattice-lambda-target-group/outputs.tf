@@ -23,6 +23,11 @@ output "status" {
   value       = aws_vpclattice_target_group.this.status
 }
 
+output "lambda_event_structure_version" {
+  description = "The version of the event structure that the Lambda function receives."
+  value       = one(aws_vpclattice_target_group.this.config[*].lambda_event_structure_version)
+}
+
 output "targets" {
   description = <<EOF
   The list of targets of the target group.

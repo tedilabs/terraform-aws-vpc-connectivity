@@ -14,6 +14,8 @@ module "target_group" {
 
   name = "lambda-hello"
 
+  lambda_event_structure_version = "V2"
+
 
   ## Targets
   targets = [

@@ -20,10 +20,19 @@ locals {
 ###################################################
 
 # INFO: Not supported attributes
-# - `config`
+# - `config.health_check`
+# - `config.ip_address_type`
+# - `config.port`
+# - `config.protocol`
+# - `config.protocol_version`
+# - `config.vpc_identifier`
 resource "aws_vpclattice_target_group" "this" {
   name = var.name
   type = "LAMBDA"
+
+  config {
+    lambda_event_structure_version = var.lambda_event_structure_version
+  }
 
   timeouts {
     create = var.timeouts.create
