@@ -18,19 +18,19 @@ output "arn" {
   value       = aws_vpc_endpoint.this.arn
 }
 
-output "state" {
-  description = "The state of the VPC endpoint."
-  value       = aws_vpc_endpoint.this.state
-}
-
 output "owner_id" {
-  description = "The Owner ID of the VPC endpoint."
+  description = "The owner ID of the VPC endpoint."
   value       = aws_vpc_endpoint.this.owner_id
 }
 
-output "managed" {
-  description = "Whether or not the VPC Endpoint is being managed by its service."
-  value       = aws_vpc_endpoint.this.requester_managed
+output "type" {
+  description = "The type of the VPC endpoint."
+  value       = "GATEWAY"
+}
+
+output "state" {
+  description = "The state of the VPC endpoint."
+  value       = aws_vpc_endpoint.this.state
 }
 
 output "vpc_id" {
@@ -38,22 +38,21 @@ output "vpc_id" {
   value       = aws_vpc_endpoint.this.vpc_id
 }
 
-output "cidr_blocks" {
-  description = "The list of CIDR blocks for the exposed AWS service."
-  value       = aws_vpc_endpoint.this.cidr_blocks
+output "prefix_list" {
+  description = <<EOF
+  The information of the prefix list of the VPC endpoint.
+    `id` - The prefix list ID of the exposed AWS service.
+    `ipv4_cidrs` - The list of CIDR blocks for the exposed AWS service.
+  EOF
+  value = {
+    id         = aws_vpc_endpoint.this.prefix_list_id
+    ipv4_cidrs = aws_vpc_endpoint.this.cidr_blocks
+  }
 }
 
-output "prefix_list_id" {
-  description = "The prefix list ID of the exposed AWS service."
-  value       = aws_vpc_endpoint.this.prefix_list_id
-}
-
-output "policy" {
-  description = "The policy which is attached to the endpoint that controls access to the service."
-  value       = aws_vpc_endpoint.this.policy
-}
-
-output "notification_configurations" {
-  description = "A list of Endpoint Connection Notifications for VPC Endpoint events."
-  value       = var.notification_configurations
+output "route_tables" {
+  description = <<EOF
+  The list of route table IDs which is associated with the VPC endpoint.
+  EOF
+  value       = aws_vpc_endpoint_route_table_association.this[*].route_table_id
 }

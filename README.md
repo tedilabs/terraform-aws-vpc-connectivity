@@ -59,6 +59,10 @@ Terraform Modules from [this package](https://github.com/tedilabs/terraform-aws-
 
 ## Examples
 
+### VPC
+
+- [vpc-gateway-endpoint-simple](./examples/vpc-gateway-endpoint-simple)
+
 ### VPC Lattice
 
 - [lattice-service-network-simple](./examples/lattice-service-network-simple)
