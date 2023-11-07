@@ -14,19 +14,54 @@ locals {
   } : {}
 }
 
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
+locals {
+  available_az_ids = data.aws_availability_zones.available.zone_ids
+  network_mapping = {
+    for zone_id in local.available_az_ids :
+    zone_id => try(var.network_mapping[zone_id], null)
+  }
+
+  security_groups = concat(
+    (var.default_security_group.enabled
+      ? module.security_group[*].id
+      : []
+    ),
+    var.security_groups
+  )
+}
+
+
+###################################################
+# Interface Endpoint
+###################################################
+
+# TODO:
+# - `dns_options`
+# INFO: Not supported attributes
+# - `route_table_ids`
+# INFO: Use a separate resource
+# - `policy`
+# - `security_group_ids`
+# - `subnet_ids`
 resource "aws_vpc_endpoint" "this" {
   vpc_endpoint_type = "Interface"
   service_name      = var.service_name
-  vpc_id            = var.vpc_id
-  subnet_ids        = var.subnets
-  security_group_ids = setunion(
-    [module.security_group.id],
-    var.security_groups,
-  )
+  auto_accept       = var.auto_accept
+
+  vpc_id          = var.vpc_id
+  ip_address_type = lower(var.ip_address_type)
 
   private_dns_enabled = var.private_dns_enabled
-  auto_accept         = var.auto_accept
-  policy              = var.policy
+
+  timeouts {
+    create = var.timeouts.create
+    update = var.timeouts.update
+    delete = var.timeouts.delete
+  }
 
   tags = merge(
     {
@@ -39,17 +74,62 @@ resource "aws_vpc_endpoint" "this" {
 
 
 ###################################################
-# Notification
+# Policy for Interface Endpoint
 ###################################################
 
+resource "aws_vpc_endpoint_policy" "this" {
+  vpc_endpoint_id = aws_vpc_endpoint.this.id
+  policy          = var.policy
+}
+
+
+###################################################
+# Subnet Associations for Interface Endpoint
+###################################################
+
+resource "aws_vpc_endpoint_subnet_association" "this" {
+  for_each = var.network_mapping
+
+  vpc_endpoint_id = aws_vpc_endpoint.this.id
+  subnet_id       = each.value.subnet
+
+  lifecycle {
+    precondition {
+      condition     = contains(local.available_az_ids, each.key)
+      error_message = "Availability zone ${each.key} is not available."
+    }
+  }
+}
+
+
+###################################################
+# Security Groups for Interface Endpoint
+###################################################
+
+resource "aws_vpc_endpoint_security_group_association" "this" {
+  count = length(local.security_groups)
+
+  vpc_endpoint_id   = aws_vpc_endpoint.this.id
+  security_group_id = local.security_groups[count.index]
+
+  replace_default_association = count.index == 0
+}
+
+
+###################################################
+# Connection Notifications
+###################################################
+
+# INFO: Not supported attributes
+# - `vpc_endpoint_service_id`
 resource "aws_vpc_endpoint_connection_notification" "this" {
   for_each = {
-    for config in try(var.notification_configurations, []) :
-    config.sns_arn => config
+    for config in var.connection_notifications :
+    config.name => config
   }
 
   vpc_endpoint_id = aws_vpc_endpoint.this.id
 
-  connection_notification_arn = each.key
-  connection_events           = try(each.value.events, [])
+  connection_notification_arn = each.value.sns_topic
+  connection_events           = each.value.events
 }
