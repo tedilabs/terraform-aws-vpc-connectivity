@@ -18,17 +18,22 @@ output "arn" {
   value       = aws_vpc_endpoint.this.arn
 }
 
-output "state" {
-  description = "The state of the VPC endpoint."
-  value       = aws_vpc_endpoint.this.state
-}
-
 output "owner_id" {
   description = "The Owner ID of the VPC endpoint."
   value       = aws_vpc_endpoint.this.owner_id
 }
 
-output "managed" {
+output "type" {
+  description = "The type of the VPC endpoint."
+  value       = "INTERFACE"
+}
+
+output "state" {
+  description = "The state of the VPC endpoint."
+  value       = upper(aws_vpc_endpoint.this.state)
+}
+
+output "requester_managed" {
   description = "Whether or not the VPC Endpoint is being managed by its service."
   value       = aws_vpc_endpoint.this.requester_managed
 }
@@ -38,22 +43,19 @@ output "vpc_id" {
   value       = aws_vpc_endpoint.this.vpc_id
 }
 
-output "subnet_ids" {
-  description = "A list of Subnet IDs of the VPC endpoint."
-  value       = var.subnets
+output "network_mapping" {
+  description = "The configuration for the endpoint how routes traffic to targets in which subnets and IP address settings."
+  value       = local.network_mapping
+}
+
+output "ip_address_type" {
+  description = "The type of IP addresses used by the VPC endpoint."
+  value       = upper(aws_vpc_endpoint.this.ip_address_type)
 }
 
 output "default_security_group" {
-  description = "The default security group of the VPC endpoint."
-  value = {
-    id   = module.security_group.id
-    name = module.security_group.name
-
-    ingress_cidrs           = try(var.default_security_group.ingress_cidrs, [])
-    ingress_ipv6_cidrs      = try(var.default_security_group.ingress_ipv6_cidrs, [])
-    ingress_prefix_lists    = try(var.default_security_group.ingress_prefix_lists, [])
-    ingress_security_groups = try(var.default_security_group.ingress_security_groups, [])
-  }
+  description = "The default security group ID of the VPC endpoint."
+  value       = one(module.security_group[*].id)
 }
 
 output "security_groups" {
@@ -61,22 +63,27 @@ output "security_groups" {
   value       = aws_vpc_endpoint.this.security_group_ids
 }
 
-output "network_interface_ids" {
+output "network_interfaces" {
   description = "One or more network interfaces for the VPC Endpoint."
   value       = aws_vpc_endpoint.this.network_interface_ids
 }
 
-output "dns_configurations" {
+output "dns_entries" {
   description = "The DNS entries for the VPC Endpoint."
   value       = aws_vpc_endpoint.this.dns_entry
 }
 
-output "policy" {
-  description = "The policy which is attached to the endpoint that controls access to the service."
-  value       = aws_vpc_endpoint.this.policy
-}
-
-output "notification_configurations" {
-  description = "A list of Endpoint Connection Notifications for VPC Endpoint events."
-  value       = var.notification_configurations
+output "connection_notifications" {
+  description = <<EOF
+  A list of Endpoint Connection Notifications for VPC Endpoint events.
+  EOF
+  value = {
+    for name, notification in aws_vpc_endpoint_connection_notification.this :
+    name => {
+      id        = notification.id
+      state     = notification.state
+      events    = notification.connection_events
+      sns_topic = notification.connection_notification_arn
+    }
+  }
 }

@@ -22,7 +22,7 @@ module "endpoint" {
 
   vpc_id = data.aws_vpc.default.id
 
-  name    = "aws-s3"
+  name    = "gateway-aws-s3"
   service = "S3"
 
   route_tables = data.aws_route_tables.this.ids

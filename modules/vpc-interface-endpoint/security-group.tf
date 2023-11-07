@@ -4,63 +4,23 @@
 
 module "security_group" {
   source  = "tedilabs/network/aws//modules/security-group"
-  version = "~> 0.27.0"
+  version = "~> 0.29.0"
 
-  vpc_id = var.vpc_id
+  count = var.default_security_group.enabled ? 1 : 0
 
-  name        = try(var.default_security_group.name, local.metadata.name)
-  description = try(var.default_security_group.description, "Managed by Terraform.")
+  name        = coalesce(var.default_security_group.name, local.metadata.name)
+  description = var.default_security_group.description
+  vpc_id      = var.vpc_id
 
-  ingress_rules = concat(
-    (length(try(var.default_security_group.ingress_cidrs, [])) > 0
-      ? [{
-        id          = "ipv4-cidrs"
-        description = "Allow inbound traffic from the IPv4 CIDRs."
-        protocol    = "tcp"
-        from_port   = 0
-        to_port     = 65535
-
-        cidr_blocks = try(var.default_security_group.ingress_cidrs, [])
-      }]
-      : []
-    ),
-    (length(try(var.default_security_group.ingress_ipv6_cidrs, [])) > 0
-      ? [{
-        id          = "ipv6-cidrs"
-        description = "Allow inbound traffic from the IPv6 CIDRs."
-        protocol    = "tcp"
-        from_port   = 0
-        to_port     = 65535
-
-        ipv6_cidr_blocks = try(var.default_security_group.ingress_ipv6_cidrs, [])
-      }]
-      : []
-    ),
-    (length(try(var.default_security_group.ingress_prefix_lists, [])) > 0
-      ? [{
-        id          = "prefix-lists"
-        description = "Allow inbound traffic from the Prefix Lists."
-        protocol    = "tcp"
-        from_port   = 0
-        to_port     = 65535
-
-        prefix_list_ids = try(var.default_security_group.ingress_prefix_lists, [])
-      }]
-      : []
-    ),
-    [
-      for security_group in try(var.default_security_group.ingress_security_groups, []) : {
-        id          = "security-groups"
-        description = "Allow inbound traffic from the source Security Groups."
-        protocol    = "tcp"
-        from_port   = 0
-        to_port     = 65535
-
-        source_security_group_id = security_group
-      }
-    ]
-  )
-  egress_rules = []
+  ingress_rules = [
+    for i, rule in var.default_security_group.ingress_rules :
+    merge({
+      id        = try(rule.id, "endpoint-${i}")
+      protocol  = "tcp"
+      from_port = 443
+      to_port   = 443
+    }, rule)
+  ]
 
   revoke_rules_on_delete = true
   resource_group_enabled = false

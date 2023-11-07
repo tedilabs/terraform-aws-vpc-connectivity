@@ -30,7 +30,7 @@ output "type" {
 
 output "state" {
   description = "The state of the VPC endpoint."
-  value       = aws_vpc_endpoint.this.state
+  value       = upper(aws_vpc_endpoint.this.state)
 }
 
 output "vpc_id" {
