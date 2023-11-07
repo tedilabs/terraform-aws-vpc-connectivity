@@ -1,0 +1,94 @@
+provider "aws" {
+  region = "us-east-1"
+}
+
+data "aws_vpc" "default" {
+  default = true
+}
+
+data "aws_subnet" "default" {
+  for_each = toset(["use1-az1", "use1-az2"])
+
+  availability_zone_id = each.key
+  default_for_az       = true
+}
+
+
+###################################################
+# Interface Endpoint
+###################################################
+
+module "endpoint" {
+  source = "../../modules/vpc-interface-endpoint"
+  # source  = "tedilabs/vpc-connectivity/aws//modules/vpc-interface-endpoint"
+  # version = "~> 0.2.0"
+
+  name         = "interface-aws-s3"
+  service_name = "com.amazonaws.us-east-1.s3"
+  auto_accept  = true
+
+  policy = <<EOF
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "Allow-callers-from-specific-account",
+        "Effect": "Allow",
+        "Principal": "*",
+        "Action": "*",
+        "Resource": "*",
+        "Condition": {
+          "StringEquals": {
+            "aws:PrincipalAccount": "111122223333"
+          }
+        }
+      }
+    ]
+  }
+  EOF
+
+  ## Network
+  vpc_id          = data.aws_vpc.default.id
+  ip_address_type = "IPV4"
+  network_mapping = {
+    "use1-az1" = {
+      subnet = data.aws_subnet.default["use1-az1"].id
+    }
+    "use1-az2" = {
+      subnet = data.aws_subnet.default["use1-az2"].id
+    }
+  }
+  default_security_group = {
+    enabled     = true
+    name        = "interface-aws-s3"
+    description = "Managed by Terraform."
+    ingress_rules = [
+      {
+        description = "Allow all outbound traffic by default."
+        from_port   = 0
+        to_port     = 0
+        cidr_blocks = ["0.0.0.0/0"]
+      },
+    ]
+  }
+  security_groups = []
+
+
+  ## DNS
+  private_dns_enabled = false
+
+
+  ## Notifications
+  connection_notifications = [
+    {
+      name      = "admin-email"
+      sns_topic = module.topic.arn
+      events    = ["Accept", "Reject"]
+    }
+  ]
+
+
+  tags = {
+    "project" = "terraform-aws-vpc-connectivity-examples"
+  }
+}
