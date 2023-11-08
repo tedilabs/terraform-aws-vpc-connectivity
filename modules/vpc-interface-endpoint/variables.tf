@@ -60,15 +60,40 @@ variable "default_security_group" {
     (Optional) `enabled` - Whether to use the default security group. Defaults to `true`.
     (Optional) `name` - The name of the default security group. If not provided, the endpoint name is used for the name of security group.
     (Optional) `description` - The description of the default security group.
-    (Optional) `ingress_rules` - A list of ingress rules in a security group. You don't need to specify `protocol`, `from_port`, `to_port`. Just specify source information. Defaults to `[{ cidr_blocks = "0.0.0.0/0" }]`.
+    (Optional) `ingress_rules` - A list of ingress rules in a security group. You don't need to specify `protocol`, `from_port`, `to_port`. Just specify source information. Defaults to `[{ id = "default", ipv4_cidrs = ["0.0.0.0/0"] }]`. Each block of `ingress_rules` as defined below.
+      (Optional) `id` - The ID of the ingress rule. This value is only used internally within Terraform code.
+      (Optional) `description` - The description of the rule.
+      (Optional) `protocol` - The protocol to match. Note that if `protocol` is set to `-1`, it translates to all protocols, all port ranges, and `from_port` and `to_port` values should not be defined. Defaults to `tcp`.
+      (Optional) `from_port` - The start of port range for the TCP protocols. Defaults to `443`.
+      (Optional) `to_port` - The end of port range for the TCP protocols. Defaults to `443`.
+      (Optional) `ipv4_cidrs` - The IPv4 network ranges to allow, in CIDR notation.
+      (Optional) `ipv6_cidrs` - The IPv6 network ranges to allow, in CIDR notation.
+      (Optional) `prefix_lists` - The prefix list IDs to allow.
+      (Optional) `security_groups` - The source security group IDs to allow.
+      (Optional) `self` - Whether the security group itself will be added as a source to this ingress rule.
   EOF
   type = object({
     enabled     = optional(bool, true)
     name        = optional(string)
     description = optional(string, "Managed by Terraform.")
-    ingress_rules = optional(any, [{
-      cidr_blocks = ["0.0.0.0/0"]
-    }])
+    ingress_rules = optional(
+      list(object({
+        id              = string
+        description     = optional(string, "Managed by Terraform.")
+        protocol        = optional(string)
+        from_port       = optional(number)
+        to_port         = optional(number)
+        ipv4_cidrs      = optional(list(string), [])
+        ipv6_cidrs      = optional(list(string), [])
+        prefix_lists    = optional(list(string), [])
+        security_groups = optional(list(string), [])
+        self            = optional(bool, false)
+      })),
+      [{
+        id         = "default"
+        ipv4_cidrs = ["0.0.0.0/0"]
+      }]
+    )
   })
   default  = {}
   nullable = false

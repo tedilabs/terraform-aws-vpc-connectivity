@@ -4,7 +4,7 @@
 
 module "security_group" {
   source  = "tedilabs/network/aws//modules/security-group"
-  version = "~> 0.29.0"
+  version = "~> 0.31.0"
 
   count = var.default_security_group.enabled ? 1 : 0
 
@@ -15,7 +15,7 @@ module "security_group" {
   ingress_rules = [
     for i, rule in var.default_security_group.ingress_rules :
     merge({
-      id        = try(rule.id, "endpoint-${i}")
+      id        = rule.id
       protocol  = "tcp"
       from_port = 443
       to_port   = 443

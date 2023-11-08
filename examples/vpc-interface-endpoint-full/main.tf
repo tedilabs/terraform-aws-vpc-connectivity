@@ -64,10 +64,12 @@ module "endpoint" {
     description = "Managed by Terraform."
     ingress_rules = [
       {
-        description = "Allow all outbound traffic by default."
+        id          = "tcp/all"
+        description = "Allow all tcp traffic by default."
+        protocol    = "tcp"
         from_port   = 0
         to_port     = 0
-        cidr_blocks = ["0.0.0.0/0"]
+        ipv4_cidrs  = ["0.0.0.0/0"]
       },
     ]
   }
