@@ -13,12 +13,12 @@ output "status" {
   value       = aws_vpc_peering_connection_accepter.this.accept_status
 }
 
-output "requester" {
+output "requester_vpc" {
   description = "The requester information including AWS Account ID, Region, VPC ID."
-  value       = local.requester
+  value       = local.requester_vpc
 }
 
-output "accepter" {
+output "accepter_vpc" {
   description = "The accepter information including AWS Account ID, Region, VPC ID."
-  value       = local.accepter
+  value       = local.accepter_vpc
 }

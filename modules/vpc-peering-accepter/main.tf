@@ -14,30 +14,23 @@ locals {
   } : {}
 }
 
-data "aws_caller_identity" "this" {}
-data "aws_region" "this" {}
-
 locals {
-  requester = {
-    account_id = aws_vpc_peering_connection_accepter.this.peer_owner_id
-    region     = aws_vpc_peering_connection_accepter.this.peer_region
-    vpc_id     = aws_vpc_peering_connection_accepter.this.peer_vpc_id
-    cidr_block = data.aws_vpc_peering_connection.this.cidr_block
-    secondary_cidr_blocks = [
+  requester_vpc = {
+    account = data.aws_vpc_peering_connection.this.owner_id
+    region  = data.aws_vpc_peering_connection.this.region
+    id      = aws_vpc_peering_connection_accepter.this.vpc_id
+    ipv4_cidrs = [
       for cidr in data.aws_vpc_peering_connection.this.cidr_block_set :
       cidr.cidr_block
-      if cidr.cidr_block != data.aws_vpc_peering_connection.this.cidr_block
     ]
   }
-  accepter = {
-    account_id = data.aws_caller_identity.this.account_id
-    region     = data.aws_region.this.name
-    vpc_id     = aws_vpc_peering_connection_accepter.this.vpc_id
-    cidr_block = data.aws_vpc_peering_connection.this.peer_cidr_block
-    secondary_cidr_blocks = [
+  accepter_vpc = {
+    account = aws_vpc_peering_connection_accepter.this.peer_owner_id
+    region  = aws_vpc_peering_connection_accepter.this.peer_region
+    id      = aws_vpc_peering_connection_accepter.this.peer_vpc_id
+    ipv4_cidrs = [
       for cidr in data.aws_vpc_peering_connection.this.peer_cidr_block_set :
       cidr.cidr_block
-      if cidr.cidr_block != data.aws_vpc_peering_connection.this.peer_cidr_block
     ]
   }
 }
@@ -48,7 +41,7 @@ locals {
 ###################################################
 
 resource "aws_vpc_peering_connection_accepter" "this" {
-  vpc_peering_connection_id = var.id
+  vpc_peering_connection_id = data.aws_vpc_peering_connection.this.id
   auto_accept               = true
 
   tags = merge(
@@ -60,6 +53,8 @@ resource "aws_vpc_peering_connection_accepter" "this" {
   )
 }
 
+# INFO: Not supported attributes
+# - `requester`
 resource "aws_vpc_peering_connection_options" "this" {
   vpc_peering_connection_id = aws_vpc_peering_connection_accepter.this.id
 
@@ -69,5 +64,5 @@ resource "aws_vpc_peering_connection_options" "this" {
 }
 
 data "aws_vpc_peering_connection" "this" {
-  id = aws_vpc_peering_connection_accepter.this.id
+  id = var.peering_connection.id
 }

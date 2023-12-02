@@ -1,18 +1,23 @@
-variable "id" {
-  description = "(Required) The VPC Peering Connection ID to manage."
-  type        = string
-  nullable    = false
+variable "peering_connection" {
+  description = <<EOF
+  (Required) The information of the VPC Peering Connection to accept. The given filters must match exactly one VPC peering connection. `peering_connection` as defined below.
+    (Optional) `id` - The VPC Peering Connection ID to manage.
+  account.
+  EOF
+  type = object({
+    id = optional(string)
+  })
+  nullable = false
 }
 
 variable "name" {
   description = "(Required) Desired name for the VPC Peering resources."
   type        = string
-  default     = ""
   nullable    = false
 }
 
 variable "allow_remote_vpc_dns_resolution" {
-  description = "(Optional) Allow a accepter VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the requester VPC. This is not supported for inter-region VPC peering."
+  description = "(Optional) Whether to allow a accepter VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the requester VPC. Defaults to `false`."
   type        = bool
   default     = false
   nullable    = false

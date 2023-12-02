@@ -4,34 +4,36 @@ variable "name" {
   nullable    = false
 }
 
-variable "vpc_id" {
-  description = "(Required) The ID of the requester VPC."
-  type        = string
-  nullable    = false
+variable "requester_vpc" {
+  description = <<EOF
+  (Required) The configuration of the requester VPC. `requester_vpc` as defined below.
+    (Required) `id` - The ID of the requester VPC.
+  account.
+  EOF
+  type = object({
+    id = string
+  })
+  nullable = false
 }
 
-variable "accepter_vpc_id" {
-  description = "(Required) The ID of the VPC with which you are creating the VPC Peering Connection."
-  type        = string
-  nullable    = false
-}
-
-variable "accepter_region" {
-  description = "(Optional) The region of the VPC with which you are creating the VPC Peering Connection."
-  type        = string
-  default     = null
-  nullable    = true
-}
-
-variable "accepter_account_id" {
-  description = "(Optional) The AWS account ID of the owner of the peer VPC."
-  type        = string
-  default     = null
-  nullable    = true
+variable "accepter_vpc" {
+  description = <<EOF
+  (Required) The configuration of the accepter VPC. `accepter_vpc` as defined below.
+    (Required) `id` - The ID of the VPC with which you are creating the VPC Peering Connection.
+    (Optional) `region` - The region of the VPC with which you are creating the VPC Peering Connection. Defaults to the region of the current provider.
+    (Optional) `account` - The AWS account ID of the owner of the peer VPC. Defaults to the current
+  account.
+  EOF
+  type = object({
+    id      = string
+    region  = optional(string)
+    account = optional(string)
+  })
+  nullable = false
 }
 
 variable "allow_remote_vpc_dns_resolution" {
-  description = "(Optional) Allow a requester VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the accepter VPC. This is not supported for inter-region VPC peering."
+  description = "(Optional) Whether to allow a requester VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the accepter VPC. Defaults to `false`."
   type        = bool
   default     = false
   nullable    = false
