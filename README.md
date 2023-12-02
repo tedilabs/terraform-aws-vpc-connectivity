@@ -59,7 +59,11 @@ Terraform Modules from [this package](https://github.com/tedilabs/terraform-aws-
 
 ## Examples
 
-### VPC
+### VPC Peering
+
+- [vpc-peering-requester-and-accepter-cross-region](./examples/vpc-peering-requester-and-accepter-cross-region)
+
+### VPC PrivateLink
 
 - [vpc-gateway-endpoint-simple](./examples/vpc-gateway-endpoint-simple)
 - [vpc-interface-endpoint-simple](./examples/vpc-interface-endpoint-simple)
