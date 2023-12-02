@@ -4,30 +4,54 @@ variable "name" {
   nullable    = false
 }
 
-variable "requester_vpc_id" {
-  description = "(Required) The ID of the requester VPC."
-  type        = string
-  nullable    = false
+variable "requester_vpc" {
+  description = <<EOF
+  (Required) The configuration of the requester VPC. `requester_vpc` as defined below.
+    (Required) `id` - The ID of the requester VPC.
+  account.
+  EOF
+  type = object({
+    id = string
+  })
+  nullable = false
 }
 
-variable "accepter_vpc_id" {
-  description = "(Required) The ID of the VPC with which you are creating the VPC Peering Connection."
-  type        = string
-  nullable    = false
+variable "requester_options" {
+  description = <<EOF
+  (Optional) The requester options of the VPC Peering Connection. `requester_options` as defined below.
+    (Optional) `allow_remote_vpc_dns_resolution` - Whether to allow a requester VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the accepter VPC. Defaults to `false`.
+  account.
+  EOF
+  type = object({
+    allow_remote_vpc_dns_resolution = optional(bool, false)
+  })
+  default  = {}
+  nullable = false
 }
 
-variable "requester_allow_remote_vpc_dns_resolution" {
-  description = "(Optional) Allow a requester VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the accepter VPC. This is not supported for inter-region VPC peering."
-  type        = bool
-  default     = false
-  nullable    = false
+variable "accepter_vpc" {
+  description = <<EOF
+  (Required) The configuration of the accepter VPC. `accepter_vpc` as defined below.
+    (Required) `id` - The ID of the VPC with which you are creating the VPC Peering Connection.
+  account.
+  EOF
+  type = object({
+    id = string
+  })
+  nullable = false
 }
 
-variable "accepter_allow_remote_vpc_dns_resolution" {
-  description = "(Optional) Allow a accepter VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the requester VPC. This is not supported for inter-region VPC peering."
-  type        = bool
-  default     = false
-  nullable    = false
+variable "accepter_options" {
+  description = <<EOF
+  (Optional) The accepter options of the VPC Peering Connection. `accepter_options` as defined below.
+    (Optional) `allow_remote_vpc_dns_resolution` - Whether to allow a accepter VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the requester VPC. Defaults to `false`.
+  account.
+  EOF
+  type = object({
+    allow_remote_vpc_dns_resolution = optional(bool, false)
+  })
+  default  = {}
+  nullable = false
 }
 
 variable "tags" {

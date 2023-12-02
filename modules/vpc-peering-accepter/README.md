@@ -51,6 +51,7 @@ This module creates following resources.
 | Name | Description |
 |------|-------------|
 | <a name="output_accepter_vpc"></a> [accepter\_vpc](#output\_accepter\_vpc) | The accepter information including AWS Account ID, Region, VPC ID. |
+| <a name="output_allow_remote_vpc_dns_resolution"></a> [allow\_remote\_vpc\_dns\_resolution](#output\_allow\_remote\_vpc\_dns\_resolution) | Whether to allow a accepter VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the requester VPC. |
 | <a name="output_id"></a> [id](#output\_id) | The ID of the VPC Peering Connection. |
 | <a name="output_name"></a> [name](#output\_name) | The VPC Peering name. |
 | <a name="output_requester_vpc"></a> [requester\_vpc](#output\_requester\_vpc) | The requester information including AWS Account ID, Region, VPC ID. |

@@ -34,6 +34,6 @@ output "accepter_vpc" {
 }
 
 output "allow_remote_vpc_dns_resolution" {
-  description = "Whether to allow a accepter VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the requester VPC."
+  description = "Whether to allow a requester VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the accepter VPC."
   value       = var.allow_remote_vpc_dns_resolution
 }
