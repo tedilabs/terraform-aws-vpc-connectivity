@@ -61,6 +61,7 @@ Terraform Modules from [this package](https://github.com/tedilabs/terraform-aws-
 
 ### VPC Peering
 
+- [vpc-peering-cross-region](./examples/vpc-peering-cross-region)
 - [vpc-peering-requester-and-accepter-cross-region](./examples/vpc-peering-requester-and-accepter-cross-region)
 
 ### VPC PrivateLink

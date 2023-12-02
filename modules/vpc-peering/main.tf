@@ -14,59 +14,60 @@ locals {
   } : {}
 }
 
-data "aws_caller_identity" "this" {}
-data "aws_region" "this" {}
-
-data "aws_vpc" "requester" {
-  id = var.requester_vpc_id
+provider "aws" {
+  alias = "requester"
 }
 
-data "aws_vpc" "accepter" {
-  id = var.accepter_vpc_id
+provider "aws" {
+  alias = "accepter"
+}
+
+data "aws_caller_identity" "requester" {
+  provider = aws.accepter
+}
+
+data "aws_caller_identity" "accepter" {
+  provider = aws.accepter
+}
+
+data "aws_region" "requester" {
+  provider = aws.accepter
+}
+
+data "aws_region" "accepter" {
+  provider = aws.accepter
 }
 
 locals {
-  requester = {
-    account_id = data.aws_caller_identity.this.account_id
-    region     = data.aws_region.this.name
-    vpc_id     = var.requester_vpc_id
-    cidr_block = data.aws_vpc.requester.cidr_block
-    secondary_cidr_blocks = [
-      for association in data.aws_vpc.requester.cidr_block_associations :
-      association.cidr_block
-      if association.cidr_block != data.aws_vpc.requester.cidr_block
-    ]
+  requester_vpc = {
+    id      = var.requester_vpc.id
+    region  = data.aws_region.requester.name
+    account = data.aws_caller_identity.requester.account_id
   }
-  accepter = {
-    account_id = data.aws_caller_identity.this.account_id
-    region     = data.aws_region.this.name
-    vpc_id     = var.accepter_vpc_id
-    cidr_block = data.aws_vpc.accepter.cidr_block
-    secondary_cidr_blocks = [
-      for association in data.aws_vpc.accepter.cidr_block_associations :
-      association.cidr_block
-      if association.cidr_block != data.aws_vpc.accepter.cidr_block
-    ]
+  accepter_vpc = {
+    id      = var.accepter_vpc.id
+    region  = data.aws_region.accepter.name
+    account = data.aws_caller_identity.accepter.account_id
   }
 }
 
 
 ###################################################
-# VPC Peering
+# VPC Peering for Requester
 ###################################################
 
+# INFO: Not supported attributes
+# - `accepter`
+# - `requester`
 resource "aws_vpc_peering_connection" "this" {
-  vpc_id      = local.requester.vpc_id
-  peer_vpc_id = local.accepter.vpc_id
-  auto_accept = true
+  provider = aws.requester
 
-  requester {
-    allow_remote_vpc_dns_resolution = var.requester_allow_remote_vpc_dns_resolution
-  }
+  vpc_id      = local.requester_vpc.id
+  auto_accept = false
 
-  accepter {
-    allow_remote_vpc_dns_resolution = var.accepter_allow_remote_vpc_dns_resolution
-  }
+  peer_vpc_id   = local.accepter_vpc.id
+  peer_region   = local.accepter_vpc.region
+  peer_owner_id = local.accepter_vpc.account
 
   tags = merge(
     {
@@ -75,4 +76,52 @@ resource "aws_vpc_peering_connection" "this" {
     local.module_tags,
     var.tags,
   )
+}
+
+# INFO: Not supported attributes
+# - `accepter`
+resource "aws_vpc_peering_connection_options" "requester" {
+  provider = aws.requester
+
+  vpc_peering_connection_id = aws_vpc_peering_connection_accepter.this.id
+
+  requester {
+    allow_remote_vpc_dns_resolution = var.requester_options.allow_remote_vpc_dns_resolution
+  }
+}
+
+
+###################################################
+# VPC Peering for Accepter
+###################################################
+
+resource "aws_vpc_peering_connection_accepter" "this" {
+  provider = aws.accepter
+
+  vpc_peering_connection_id = aws_vpc_peering_connection.this.id
+  auto_accept               = true
+
+  tags = merge(
+    {
+      "Name" = local.metadata.name
+    },
+    local.module_tags,
+    var.tags,
+  )
+}
+
+# INFO: Not supported attributes
+# - `requester`
+resource "aws_vpc_peering_connection_options" "accepter" {
+  provider = aws.accepter
+
+  vpc_peering_connection_id = aws_vpc_peering_connection_accepter.this.id
+
+  accepter {
+    allow_remote_vpc_dns_resolution = var.accepter_options.allow_remote_vpc_dns_resolution
+  }
+}
+
+data "aws_vpc_peering_connection" "this" {
+  id = aws_vpc_peering_connection_accepter.this.id
 }
