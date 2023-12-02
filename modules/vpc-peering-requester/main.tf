@@ -18,15 +18,15 @@ data "aws_caller_identity" "this" {}
 data "aws_region" "this" {}
 
 locals {
-  requester = {
-    account_id = data.aws_caller_identity.this.account_id
-    region     = data.aws_region.this.name
-    vpc_id     = var.vpc_id
+  requester_vpc = {
+    id      = var.requester_vpc.id
+    region  = data.aws_region.this.name
+    account = data.aws_caller_identity.this.account_id
   }
-  accepter = {
-    account_id = var.accepter_account_id != null ? var.accepter_account_id : local.requester.account_id
-    region     = var.accepter_region != null ? var.accepter_region : local.requester.region
-    vpc_id     = var.accepter_vpc_id
+  accepter_vpc = {
+    id      = var.accepter_vpc.id
+    region  = coalesce(var.accepter_vpc.region, local.requester_vpc.region)
+    account = coalesce(var.accepter_vpc.account, local.requester_vpc.account)
   }
 }
 
@@ -35,13 +35,16 @@ locals {
 # VPC Peering for Requester
 ###################################################
 
+# INFO: Not supported attributes
+# - `accepter`
+# - `requester`
 resource "aws_vpc_peering_connection" "this" {
-  vpc_id      = local.requester.vpc_id
+  vpc_id      = local.requester_vpc.id
   auto_accept = false
 
-  peer_vpc_id   = local.accepter.vpc_id
-  peer_region   = local.accepter.region
-  peer_owner_id = local.accepter.account_id
+  peer_vpc_id   = local.accepter_vpc.id
+  peer_region   = local.accepter_vpc.region
+  peer_owner_id = local.accepter_vpc.account
 
   tags = merge(
     {
@@ -52,6 +55,8 @@ resource "aws_vpc_peering_connection" "this" {
   )
 }
 
+# INFO: Not supported attributes
+# - `accepter`
 resource "aws_vpc_peering_connection_options" "this" {
   count = var.allow_remote_vpc_dns_resolution ? 1 : 0
 

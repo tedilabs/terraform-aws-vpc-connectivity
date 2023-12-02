@@ -13,26 +13,27 @@ output "status" {
   value       = aws_vpc_peering_connection.this.accept_status
 }
 
-output "requester" {
+output "requester_vpc" {
   description = "The requester information including AWS Account ID, Region, VPC ID."
-  value = merge(local.requester, {
-    cidr_block = data.aws_vpc_peering_connection.this.cidr_block
-    secondary_cidr_blocks = [
+  value = merge(local.requester_vpc, {
+    ipv4_cidrs = toset([
       for cidr in data.aws_vpc_peering_connection.this.cidr_block_set :
       cidr.cidr_block
-      if cidr.cidr_block != data.aws_vpc_peering_connection.this.cidr_block
-    ]
+    ])
   })
 }
 
-output "accepter" {
+output "accepter_vpc" {
   description = "The accepter information including AWS Account ID, Region, VPC ID."
-  value = merge(local.accepter, {
-    cidr_block = data.aws_vpc_peering_connection.this.peer_cidr_block
-    secondary_cidr_blocks = [
+  value = merge(local.accepter_vpc, {
+    ipv4_cidrs = toset([
       for cidr in data.aws_vpc_peering_connection.this.peer_cidr_block_set :
       cidr.cidr_block
-      if cidr.cidr_block != data.aws_vpc_peering_connection.this.peer_cidr_block
-    ]
+    ])
   })
+}
+
+output "allow_remote_vpc_dns_resolution" {
+  description = "Whether to allow a accepter VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the requester VPC."
+  value       = var.allow_remote_vpc_dns_resolution
 }
