@@ -31,6 +31,8 @@ This module creates following resources.
 |------|------|
 | [aws_vpc_peering_connection_accepter.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection_accepter) | resource |
 | [aws_vpc_peering_connection_options.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection_options) | resource |
+| [aws_caller_identity.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_region.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [aws_vpc_peering_connection.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc_peering_connection) | data source |
 
 ## Inputs
@@ -38,7 +40,7 @@ This module creates following resources.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | (Required) Desired name for the VPC Peering resources. | `string` | n/a | yes |
-| <a name="input_peering_connection"></a> [peering\_connection](#input\_peering\_connection) | (Required) The information of the VPC Peering Connection to accept. The given filters must match exactly one VPC peering connection. `peering_connection` as defined below.<br>    (Optional) `id` - The VPC Peering Connection ID to manage.<br>  account. | <pre>object({<br>    id = optional(string)<br>  })</pre> | n/a | yes |
+| <a name="input_peering_connection"></a> [peering\_connection](#input\_peering\_connection) | (Required) The information of the VPC Peering Connection to accept. The given filters must match exactly one VPC peering connection. `peering_connection` as defined below.<br>    (Optional) `id` - The VPC Peering Connection ID to manage.<br>    (Optional) `requester_vpc` - The information of the requester VPC. `requester_vpc` as defined below.<br>      (Optional) `id` - The ID of the requester VPC.<br>      (Optional) `region` - The region of the VPC with which you are creating the VPC Peering Connection.<br>      (Optional) `account` - The AWS account ID of the owner of the peer VPC.<br>    (Optional) `accepter_vpc` - The information of the accepter VPC. `accepter_vpc` as defined below.<br>      (Optional) `id` - The ID of the accepter VPC.<br>  account. | <pre>object({<br>    id = optional(string)<br>    requester_vpc = optional(object({<br>      id      = optional(string)<br>      region  = optional(string)<br>      account = optional(string)<br><br>      ipv4_cidr = optional(string)<br>    }), {})<br>    accepter_vpc = optional(object({<br>      id = optional(string)<br><br>      ipv4_cidr = optional(string)<br>    }), {})<br>  })</pre> | n/a | yes |
 | <a name="input_allow_remote_vpc_dns_resolution"></a> [allow\_remote\_vpc\_dns\_resolution](#input\_allow\_remote\_vpc\_dns\_resolution) | (Optional) Whether to allow a accepter VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the requester VPC. Defaults to `false`. | `bool` | `false` | no |
 | <a name="input_module_tags_enabled"></a> [module\_tags\_enabled](#input\_module\_tags\_enabled) | (Optional) Whether to create AWS Resource Tags for the module informations. | `bool` | `true` | no |
 | <a name="input_resource_group_description"></a> [resource\_group\_description](#input\_resource\_group\_description) | (Optional) The description of Resource Group. | `string` | `"Managed by Terraform."` | no |
