@@ -5,10 +5,10 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = ">= 4.29"
-      # configuration_aliases = [
-      #   aws.accepter,
-      #   aws.requester,
-      # ]
+      configuration_aliases = [
+        aws.accepter,
+        aws.requester,
+      ]
     }
   }
 }
