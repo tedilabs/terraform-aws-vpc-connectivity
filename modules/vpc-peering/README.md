@@ -18,7 +18,6 @@ This module creates following resources.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.29.0 |
 | <a name="provider_aws.accepter"></a> [aws.accepter](#provider\_aws.accepter) | 5.29.0 |
 | <a name="provider_aws.requester"></a> [aws.requester](#provider\_aws.requester) | 5.29.0 |
 
@@ -26,7 +25,8 @@ This module creates following resources.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | tedilabs/misc/aws//modules/resource-group | ~> 0.10.0 |
+| <a name="module_resource_group_accepter"></a> [resource\_group\_accepter](#module\_resource\_group\_accepter) | tedilabs/misc/aws//modules/resource-group | ~> 0.10.0 |
+| <a name="module_resource_group_requester"></a> [resource\_group\_requester](#module\_resource\_group\_requester) | tedilabs/misc/aws//modules/resource-group | ~> 0.10.0 |
 
 ## Resources
 

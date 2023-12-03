@@ -23,7 +23,7 @@ provider "aws" {
 }
 
 data "aws_caller_identity" "requester" {
-  provider = aws.accepter
+  provider = aws.requester
 }
 
 data "aws_caller_identity" "accepter" {
@@ -31,7 +31,7 @@ data "aws_caller_identity" "accepter" {
 }
 
 data "aws_region" "requester" {
-  provider = aws.accepter
+  provider = aws.requester
 }
 
 data "aws_region" "accepter" {
@@ -123,5 +123,7 @@ resource "aws_vpc_peering_connection_options" "accepter" {
 }
 
 data "aws_vpc_peering_connection" "this" {
+  provider = aws.accepter
+
   id = aws_vpc_peering_connection_accepter.this.id
 }
