@@ -50,7 +50,7 @@ output "network_mapping" {
 
 output "ip_address_type" {
   description = "The type of IP addresses used by the VPC endpoint."
-  value       = upper(aws_vpc_endpoint.this.ip_address_type)
+  value       = var.ip_address_type
 }
 
 output "default_security_group" {
@@ -66,6 +66,15 @@ output "security_groups" {
 output "network_interfaces" {
   description = "One or more network interfaces for the VPC Endpoint."
   value       = aws_vpc_endpoint.this.network_interface_ids
+}
+
+output "private_dns" {
+  description = "The configuration of the private DNS settings for the VPC Endpoint."
+  value = {
+    enabled                            = aws_vpc_endpoint.this.private_dns_enabled
+    record_ip_type                     = var.private_dns.record_ip_type
+    only_for_inbound_resolver_endpoint = aws_vpc_endpoint.this.dns_options[0].private_dns_only_for_inbound_resolver_endpoint
+  }
 }
 
 output "dns_entries" {

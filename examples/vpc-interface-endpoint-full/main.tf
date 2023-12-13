@@ -49,7 +49,7 @@ module "endpoint" {
 
   ## Network
   vpc_id          = data.aws_vpc.default.id
-  ip_address_type = "IPV4"
+  ip_address_type = "IPv4"
   network_mapping = {
     "use1-az1" = {
       subnet = data.aws_subnet.default["use1-az1"].id
@@ -77,7 +77,11 @@ module "endpoint" {
 
 
   ## DNS
-  private_dns_enabled = false
+  private_dns = {
+    enabled                            = true
+    record_ip_type                     = "IPv4"
+    only_for_inbound_resolver_endpoint = false
+  }
 
 
   ## Notifications
