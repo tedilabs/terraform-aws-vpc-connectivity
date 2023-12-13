@@ -14,12 +14,36 @@ locals {
   } : {}
 }
 
+locals {
+  ip_address_types = {
+    "IPv4" = "ipv4"
+    "IPv6" = "ipv6"
+  }
+}
+
+
+###################################################
+# Endpoint Service
+###################################################
+
+# INFO: Use a separate resource
+# - `allowed_principals`
 resource "aws_vpc_endpoint_service" "this" {
-  gateway_load_balancer_arns = var.gateway_load_balancer_arns
-  network_load_balancer_arns = var.network_load_balancer_arns
+  gateway_load_balancer_arns = (var.type == "GWLB"
+    ? var.load_balancers
+    : null
+  )
+  network_load_balancer_arns = (var.type == "NLB"
+    ? var.load_balancers
+    : null
+  )
 
   private_dns_name    = var.private_domain
   acceptance_required = var.acceptance_required
+  supported_ip_address_types = [
+    for ip_address_type in var.supported_ip_address_types :
+    local.ip_address_types[ip_address_type]
+  ]
 
   tags = merge(
     {
@@ -44,17 +68,19 @@ resource "aws_vpc_endpoint_service_allowed_principal" "this" {
 
 
 ###################################################
-# Notification
+# Connection Notifications
 ###################################################
 
+# INFO: Not supported attributes
+# - `vpc_endpoint_id`
 resource "aws_vpc_endpoint_connection_notification" "this" {
   for_each = {
-    for config in try(var.notification_configurations, []) :
-    config.sns_arn => config
+    for config in var.connection_notifications :
+    config.name => config
   }
 
   vpc_endpoint_service_id = aws_vpc_endpoint_service.this.id
 
-  connection_notification_arn = each.key
-  connection_events           = try(each.value.events, [])
+  connection_notification_arn = each.value.sns_topic
+  connection_events           = each.value.events
 }

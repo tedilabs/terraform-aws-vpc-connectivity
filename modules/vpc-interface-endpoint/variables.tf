@@ -61,7 +61,7 @@ variable "default_security_group" {
     (Optional) `name` - The name of the default security group. If not provided, the endpoint name is used for the name of security group.
     (Optional) `description` - The description of the default security group.
     (Optional) `ingress_rules` - A list of ingress rules in a security group. You don't need to specify `protocol`, `from_port`, `to_port`. Just specify source information. Defaults to `[{ id = "default", ipv4_cidrs = ["0.0.0.0/0"] }]`. Each block of `ingress_rules` as defined below.
-      (Optional) `id` - The ID of the ingress rule. This value is only used internally within Terraform code.
+      (Required) `id` - The ID of the ingress rule. This value is only used internally within Terraform code.
       (Optional) `description` - The description of the rule.
       (Optional) `protocol` - The protocol to match. Note that if `protocol` is set to `-1`, it translates to all protocols, all port ranges, and `from_port` and `to_port` values should not be defined. Defaults to `tcp`.
       (Optional) `from_port` - The start of port range for the TCP protocols. Defaults to `443`.

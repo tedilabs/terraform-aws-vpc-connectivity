@@ -18,6 +18,22 @@ output "state" {
   value       = aws_vpc_endpoint_service.this.state
 }
 
+output "type" {
+  description = "A load balancer type for the VPC Endpoint Service."
+  value       = var.type
+}
+
+output "load_balancers" {
+  description = "A list of ARNs of the load balancers for the VPC Endpoint Service."
+  value = (
+    var.type == "GWLB"
+    ? aws_vpc_endpoint_service.this.gateway_load_balancer_arns
+    : var.type == "NLB"
+    ? aws_vpc_endpoint_service.this.network_load_balancer_arns
+    : []
+  )
+}
+
 output "service_name" {
   description = "The service name."
   value       = aws_vpc_endpoint_service.this.service_name
@@ -28,24 +44,19 @@ output "service_type" {
   value       = aws_vpc_endpoint_service.this.service_type
 }
 
-output "gateway_load_balancer_arns" {
-  description = "ARNs of Gateway Load Balancers which is associated to the endpoint service."
-  value       = aws_vpc_endpoint_service.this.gateway_load_balancer_arns
-}
-
-output "network_load_balancer_arns" {
-  description = "ARNs of Network Load Balancers which is associated to the endpoint service."
-  value       = aws_vpc_endpoint_service.this.network_load_balancer_arns
-}
-
 output "availability_zones" {
   description = "The Availability Zones in which the service is available."
   value       = aws_vpc_endpoint_service.this.availability_zones
 }
 
+output "supported_ip_address_types" {
+  description = "The supported IP address types."
+  value       = var.supported_ip_address_types
+}
+
 output "allowed_principals" {
   description = "A list of the ARNs of allowed principals to discover a VPC endpoint service."
-  value       = var.allowed_principals
+  value       = keys(aws_vpc_endpoint_service_allowed_principal.this)
 }
 
 output "manages_vpc_endpoints" {
@@ -53,7 +64,7 @@ output "manages_vpc_endpoints" {
   value       = aws_vpc_endpoint_service.this.manages_vpc_endpoints
 }
 
-output "base_domain_names" {
+output "domain_names" {
   description = "The DNS names for the service."
   value       = aws_vpc_endpoint_service.this.base_endpoint_dns_names
 }
@@ -68,7 +79,17 @@ output "private_domain_configurations" {
   value       = aws_vpc_endpoint_service.this.private_dns_name_configuration
 }
 
-output "notification_configurations" {
-  description = "A list of Endpoint Connection Notifications for VPC Endpoint events."
-  value       = var.notification_configurations
+output "connection_notifications" {
+  description = <<EOF
+  A list of Endpoint Connection Notifications for VPC Endpoint Service events.
+  EOF
+  value = {
+    for name, notification in aws_vpc_endpoint_connection_notification.this :
+    name => {
+      id        = notification.id
+      state     = notification.state
+      events    = notification.connection_events
+      sns_topic = notification.connection_notification_arn
+    }
+  }
 }
