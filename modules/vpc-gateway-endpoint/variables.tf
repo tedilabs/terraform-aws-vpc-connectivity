@@ -5,13 +5,13 @@ variable "name" {
 }
 
 variable "service" {
-  description = "(Required) The AWS service name. Valid values are `DYNAMODB`, `S3`."
+  description = "(Required) The AWS service name. Valid values are `DYNAMODB`, `S3`, `S3EXPRESS`."
   type        = string
   nullable    = false
 
   validation {
-    condition     = contains(["DYNAMODB", "S3"], var.service)
-    error_message = "Valid values are `DYNAMODB` and `S3`."
+    condition     = contains(["DYNAMODB", "S3", "S3EXPRESS"], var.service)
+    error_message = "Valid values are `DYNAMODB`, `S3` and `S3EXPRESS`."
   }
 }
 

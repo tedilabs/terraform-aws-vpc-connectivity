@@ -40,7 +40,7 @@ This module creates following resources.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | (Required) Desired name for the VPC Gateway Endpoint. | `string` | n/a | yes |
-| <a name="input_service"></a> [service](#input\_service) | (Required) The AWS service name. Valid values are `DYNAMODB`, `S3`. | `string` | n/a | yes |
+| <a name="input_service"></a> [service](#input\_service) | (Required) The AWS service name. Valid values are `DYNAMODB`, `S3`, `S3EXPRESS`. | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | (Required) The ID of the VPC in which the endpoint will be used. | `string` | n/a | yes |
 | <a name="input_module_tags_enabled"></a> [module\_tags\_enabled](#input\_module\_tags\_enabled) | (Optional) Whether to create AWS Resource Tags for the module informations. | `bool` | `true` | no |
 | <a name="input_policy"></a> [policy](#input\_policy) | (Optional) A policy to attach to the endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access. All Gateway endpoints support policies. | `string` | `null` | no |
