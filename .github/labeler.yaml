@@ -38,6 +38,9 @@
 ":floppy_disk: reachability-analyzer-path":
 - modules/reachability-analyzer-path/**/*
 
+":floppy_disk: transit-gateway":
+- modules/transit-gateway/**/*
+
 ":floppy_disk: vpc-endpoint-service":
 - modules/vpc-endpoint-service/**/*
 
