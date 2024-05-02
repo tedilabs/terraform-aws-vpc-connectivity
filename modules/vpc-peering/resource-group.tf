@@ -12,7 +12,7 @@ locals {
 
 module "resource_group_requester" {
   source  = "tedilabs/misc/aws//modules/resource-group"
-  version = "~> 0.10.0"
+  version = "~> 0.11.0"
 
   providers = {
     aws = aws.requester
@@ -36,7 +36,7 @@ module "resource_group_requester" {
 
 module "resource_group_accepter" {
   source  = "tedilabs/misc/aws//modules/resource-group"
-  version = "~> 0.10.0"
+  version = "~> 0.11.0"
 
   providers = {
     aws = aws.accepter
