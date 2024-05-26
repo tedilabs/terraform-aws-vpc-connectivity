@@ -1,57 +1,95 @@
 # Modules
 ":floppy_disk: dx-connection":
-- modules/dx-connection/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/dx-connection/**/*
 
 ":floppy_disk: dx-gateway":
-- modules/dx-gateway/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/dx-gateway/**/*
 
 ":floppy_disk: dx-private-virtual-interface":
-- modules/dx-private-virtual-interface/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/dx-private-virtual-interface/**/*
 
 ":floppy_disk: lattice-alb-target-group":
-- modules/lattice-alb-target-group/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/lattice-alb-target-group/**/*
 
 ":floppy_disk: lattice-instance-target-group":
-- modules/lattice-instance-target-group/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/lattice-instance-target-group/**/*
 
 ":floppy_disk: lattice-ip-target-group":
-- modules/lattice-ip-target-group/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/lattice-ip-target-group/**/*
 
 ":floppy_disk: lattice-lambda-target-group":
-- modules/lattice-lambda-target-group/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/lattice-lambda-target-group/**/*
 
 ":floppy_disk: lattice-service-listener":
-- modules/lattice-service-listener/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/lattice-service-listener/**/*
 
 ":floppy_disk: lattice-service-network":
-- modules/lattice-service-network/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/lattice-service-network/**/*
 
 ":floppy_disk: lattice-service":
-- modules/lattice-service/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/lattice-service/**/*
 
 ":floppy_disk: lattice-shared-service-network":
-- modules/lattice-shared-service-network/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/lattice-shared-service-network/**/*
 
 ":floppy_disk: lattice-shared-service":
-- modules/lattice-shared-service/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/lattice-shared-service/**/*
 
 ":floppy_disk: reachability-analyzer-path":
-- modules/reachability-analyzer-path/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/reachability-analyzer-path/**/*
 
 ":floppy_disk: vpc-endpoint-service":
-- modules/vpc-endpoint-service/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/vpc-endpoint-service/**/*
 
 ":floppy_disk: vpc-gateway-endpoint":
-- modules/vpc-gateway-endpoint/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/vpc-gateway-endpoint/**/*
 
 ":floppy_disk: vpc-interface-endpoint":
-- modules/vpc-interface-endpoint/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/vpc-interface-endpoint/**/*
 
 ":floppy_disk: vpc-peering":
-- modules/vpc-peering/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/vpc-peering/**/*
 
 ":floppy_disk: vpc-peering-accepter":
-- modules/vpc-peering-accepter/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/vpc-peering-accepter/**/*
 
 ":floppy_disk: vpc-peering-requester":
-- modules/vpc-peering-requester/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/vpc-peering-requester/**/*
