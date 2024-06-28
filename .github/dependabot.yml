@@ -7,24 +7,6 @@ updates:
 
 - package-ecosystem: terraform
   directories:
-  - /modules/dx-connection
-  - /modules/dx-gateway
-  - /modules/dx-private-virtual-interface
-  - /modules/lattice-alb-target-group
-  - /modules/lattice-instance-target-group
-  - /modules/lattice-ip-target-group
-  - /modules/lattice-lambda-target-group
-  - /modules/lattice-service
-  - /modules/lattice-service-listener
-  - /modules/lattice-service-network
-  - /modules/lattice-shared-service
-  - /modules/lattice-shared-service-network
-  - /modules/reachability-analyzer-path
-  - /modules/vpc-endpoint-service
-  - /modules/vpc-gateway-endpoint
-  - /modules/vpc-interface-endpoint
-  - /modules/vpc-peering
-  - /modules/vpc-peering-accepter
-  - /modules/vpc-peering-requester
+  - /modules/*
   schedule:
     interval: weekly
