@@ -5,7 +5,7 @@ This module creates following resources.
 - `aws_vpclattice_service_network_vpc_association` (optional)
 - `aws_vpclattice_service_network_service_association` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -58,4 +58,4 @@ This module creates following resources.
 | <a name="output_service_associations"></a> [service\_associations](#output\_service\_associations) | The list of the service associations with the service network.<br>    `id` - The ID of the association.<br>    `arn` - The ARN of the Association.<br>    `status` - The operations status. Valid Values are `CREATE_IN_PROGRESS`, `ACTIVE`, `DELETE_IN_PROGRESS`, `CREATE_FAILED`, `DELETE_FAILED`.<br>    `created_by` - The principal that created the association.<br><br>    `service` - The ARN (Amazon Resource Name) of the service. |
 | <a name="output_updated_at"></a> [updated\_at](#output\_updated\_at) | Date and time that the service network was last updated, specified in ISO-8601 format. |
 | <a name="output_vpc_associations"></a> [vpc\_associations](#output\_vpc\_associations) | The list of VPC associations with the service network.<br>    `id` - The ID of the association.<br>    `arn` - The ARN of the Association.<br>    `status` - The operations status. Valid Values are `CREATE_IN_PROGRESS`, `ACTIVE`, `DELETE_IN_PROGRESS`, `CREATE_FAILED`, `DELETE_FAILED`.<br>    `created_by` - The principal that created the association.<br><br>    `vpc` - The ID of the VPC.<br>    `security_groups` - A list of the IDs of the security groups. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

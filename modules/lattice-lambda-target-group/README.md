@@ -5,7 +5,7 @@ This module creates following resources.
 - `aws_vpclattice_target_group`
 - `aws_vpclattice_target_group_attachment` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -57,4 +57,4 @@ This module creates following resources.
 | <a name="output_status"></a> [status](#output\_status) | The status of the target group. |
 | <a name="output_targets"></a> [targets](#output\_targets) | The list of targets of the target group.<br>    `name` - The name of the target. This value is only used internally within Terraform code.<br>    `lambda_function` - The Amazon Resource Name (ARN) of the target Lambda function. |
 | <a name="output_type"></a> [type](#output\_type) | The type of target group. Always `LAMBDA`. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

@@ -5,7 +5,7 @@ This module creates following resources.
 - `aws_dx_connection`
 - `aws_dx_macsec_key_association` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -65,4 +65,4 @@ This module creates following resources.
 | <a name="output_partner"></a> [partner](#output\_partner) | The name of the AWS Direct Connect service provider associated with the connection. |
 | <a name="output_service_provider"></a> [service\_provider](#output\_service\_provider) | The name of the service provider associated with the connection. |
 | <a name="output_vlan"></a> [vlan](#output\_vlan) | The ID of the VLAN. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

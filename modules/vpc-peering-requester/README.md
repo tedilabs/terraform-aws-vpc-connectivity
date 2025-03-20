@@ -5,7 +5,7 @@ This module creates following resources.
 - `aws_vpc_peering_connection`
 - `aws_vpc_peering_connection_options` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -59,4 +59,4 @@ This module creates following resources.
 | <a name="output_name"></a> [name](#output\_name) | The VPC Peering name. |
 | <a name="output_requester_vpc"></a> [requester\_vpc](#output\_requester\_vpc) | The requester information including AWS Account ID, Region, VPC ID. |
 | <a name="output_status"></a> [status](#output\_status) | The status of the VPC Peering Connection request. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

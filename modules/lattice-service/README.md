@@ -10,7 +10,7 @@ This module creates following resources.
 - `aws_vpclattice_service_network_service_association` (optional)
 - `aws_vpclattice_access_log_subscription` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -84,4 +84,4 @@ This module creates following resources.
 | <a name="output_sharing"></a> [sharing](#output\_sharing) | The configuration for sharing of the Lattice service.<br>    `status` - An indication of whether the Lattice service is shared with other AWS accounts, or was shared with the current account by another AWS account. Sharing is configured through AWS Resource Access Manager (AWS RAM). Values are `NOT_SHARED`, `SHARED_BY_ME` or `SHARED_WITH_ME`.<br>    `shares` - The list of resource shares via RAM (Resource Access Manager). |
 | <a name="output_status"></a> [status](#output\_status) | The status of the service. |
 | <a name="output_zone_id"></a> [zone\_id](#output\_zone\_id) | The canonical hosted zone ID of the service to be used in a Route 53 CNAME record. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

@@ -8,7 +8,7 @@ This module creates following resources.
 - `aws_vpc_endpoint_subnet_association` (optional)
 - `aws_vpc_endpoint_connection_notification` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -83,4 +83,4 @@ This module creates following resources.
 | <a name="output_state"></a> [state](#output\_state) | The state of the VPC endpoint. |
 | <a name="output_type"></a> [type](#output\_type) | The type of the VPC endpoint. |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The VPC ID of the VPC endpoint. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

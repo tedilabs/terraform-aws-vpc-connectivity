@@ -4,7 +4,7 @@ This module creates following resources.
 
 - `aws_vpclattice_service_network_service_association` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -56,4 +56,4 @@ This module creates following resources.
 | <a name="output_service_network_associations"></a> [service\_network\_associations](#output\_service\_network\_associations) | The configuration for the service network associations with the service.<br>    `id` - The ID of the association.<br>    `arn` - The ARN of the Association.<br>    `status` - The operations status. Valid Values are `CREATE_IN_PROGRESS`, `ACTIVE`, `DELETE_IN_PROGRESS`, `CREATE_FAILED`, `DELETE_FAILED`.<br>    `created_by` - The principal that created the association.<br><br>    `service_network` - The ARN (Amazon Resource Name) of the service network. |
 | <a name="output_status"></a> [status](#output\_status) | The status of the service. |
 | <a name="output_zone_id"></a> [zone\_id](#output\_zone\_id) | The canonical hosted zone ID of the service to be used in a Route 53 CNAME record. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

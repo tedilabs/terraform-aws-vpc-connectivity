@@ -5,7 +5,7 @@ This module creates following resources.
 - `aws_dx_private_virtual_interface`
 - `aws_dx_bgp_peer` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -71,4 +71,4 @@ This module creates following resources.
 | <a name="output_router_configuration"></a> [router\_configuration](#output\_router\_configuration) | The sample router configuration for the virtual interface. |
 | <a name="output_sitelink_enabled"></a> [sitelink\_enabled](#output\_sitelink\_enabled) | Indicate whether to enable SiteLink. |
 | <a name="output_vlan"></a> [vlan](#output\_vlan) | The ID of the VLAN. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

@@ -5,7 +5,7 @@ This module creates following resources.
 - `aws_ec2_network_insights_path`
 - `aws_ec2_network_insights_analysis` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -58,4 +58,4 @@ This module creates following resources.
 | <a name="output_name"></a> [name](#output\_name) | The name of the reachability analyzer path. |
 | <a name="output_protocol"></a> [protocol](#output\_protocol) | The protocol to use for analysis. |
 | <a name="output_source_network"></a> [source\_network](#output\_source\_network) | The configuration of source network for analysis. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

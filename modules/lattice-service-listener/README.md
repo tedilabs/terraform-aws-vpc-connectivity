@@ -5,7 +5,7 @@ This module creates following resources.
 - `aws_vpclattice_listener`
 - `aws_vpclattice_listener_rule` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -63,4 +63,4 @@ This module creates following resources.
 | <a name="output_rules"></a> [rules](#output\_rules) | The list of rules to enable content-based routing to the target groups that make up the service.<br>    `id` - Unique identifier for the listener rule.<br>    `arn` - The ARN for the listener rule.<br>    `priority` - The priority assigned to the listener rule.<br>    `name` - The rule name to describe the purpose of the listener rule.<br>    `conditions` - The rule conditions.<br>      `method` - The condition of HTTP request method.<br>      `path` - The condition of HTTP request path.<br>      `headers` - The condition of HTTP request headers.<br>    `action` - The action for the listener rule.<br>      `type` - The action type for the rule of the service.<br>      `parameters` - The configuration for the parameters of the routing action. |
 | <a name="output_service"></a> [service](#output\_service) | The associated VPC Lattice service. |
 | <a name="output_updated_at"></a> [updated\_at](#output\_updated\_at) | Date and time that the listener was last updated, specified in ISO-8601 format. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

@@ -5,7 +5,7 @@ This module creates following resources.
 - `aws_dx_gateway`
 - `aws_dx_gateway_association` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -50,4 +50,4 @@ No modules.
 | <a name="output_id"></a> [id](#output\_id) | The ID of the DX Gateway. |
 | <a name="output_name"></a> [name](#output\_name) | The name of the DX Gateway. |
 | <a name="output_owner_account_id"></a> [owner\_account\_id](#output\_owner\_account\_id) | AWS Account ID of the gateway. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

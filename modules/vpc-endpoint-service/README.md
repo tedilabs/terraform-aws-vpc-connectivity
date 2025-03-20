@@ -6,7 +6,7 @@ This module creates following resources.
 - `aws_vpc_endpoint_service_allowed_principal` (optional)
 - `aws_vpc_endpoint_connection_notification` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -72,4 +72,4 @@ This module creates following resources.
 | <a name="output_state"></a> [state](#output\_state) | The state of the VPC endpoint service. |
 | <a name="output_supported_ip_address_types"></a> [supported\_ip\_address\_types](#output\_supported\_ip\_address\_types) | The supported IP address types. |
 | <a name="output_type"></a> [type](#output\_type) | A load balancer type for the VPC Endpoint Service. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
