@@ -90,8 +90,7 @@ output "rules" {
       }
 
       action = {
-        type       = rule.action_type
-        parameters = rule.action_parameters
+        type = rule.action_type
         parameters = {
           "FIXED_RESPONSE" = one(aws_vpclattice_listener_rule.this[rule.priority].action[0].fixed_response[*])
           "FORWARD" = {
@@ -111,4 +110,20 @@ output "created_at" {
 output "updated_at" {
   description = "Date and time that the listener was last updated, specified in ISO-8601 format."
   value       = aws_vpclattice_listener.this.last_updated_at
+}
+
+output "resource_group" {
+  description = "The resource group created to manage resources in this module."
+  value = merge(
+    {
+      enabled = var.resource_group.enabled && var.module_tags_enabled
+    },
+    (var.resource_group.enabled && var.module_tags_enabled
+      ? {
+        arn  = module.resource_group[0].arn
+        name = module.resource_group[0].name
+      }
+      : {}
+    )
+  )
 }

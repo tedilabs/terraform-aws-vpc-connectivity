@@ -21,8 +21,10 @@ module "listener" {
 
   rules = try(each.value.rules, [])
 
-  resource_group_enabled = false
-  module_tags_enabled    = false
+  resource_group = {
+    enabled = false
+  }
+  module_tags_enabled = false
 
   tags = merge(
     local.module_tags,

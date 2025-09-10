@@ -1,6 +1,6 @@
 locals {
-  resource_group_name = (var.resource_group_name != ""
-    ? var.resource_group_name
+  resource_group_name = (var.resource_group.name != ""
+    ? var.resource_group.name
     : join(".", [
       local.metadata.package,
       local.metadata.module,
@@ -12,16 +12,16 @@ locals {
 
 module "resource_group_requester" {
   source  = "tedilabs/misc/aws//modules/resource-group"
-  version = "~> 0.10.0"
+  version = "~> 0.12.0"
 
   providers = {
     aws = aws.requester
   }
 
-  count = (var.resource_group_enabled && var.module_tags_enabled) ? 1 : 0
+  count = (var.resource_group.enabled && var.module_tags_enabled) ? 1 : 0
 
   name        = local.resource_group_name
-  description = var.resource_group_description
+  description = var.resource_group.description
 
   query = {
     resource_tags = local.module_tags
@@ -36,14 +36,14 @@ module "resource_group_requester" {
 
 module "resource_group_accepter" {
   source  = "tedilabs/misc/aws//modules/resource-group"
-  version = "~> 0.10.0"
+  version = "~> 0.12.0"
 
   providers = {
     aws = aws.accepter
   }
 
   count = (alltrue([
-    var.resource_group_enabled,
+    var.resource_group.enabled,
     var.module_tags_enabled,
     anytrue([
       local.requester_vpc.region != local.accepter_vpc.region,
@@ -52,7 +52,7 @@ module "resource_group_accepter" {
   ]) ? 1 : 0)
 
   name        = local.resource_group_name
-  description = var.resource_group_description
+  description = var.resource_group.description
 
   query = {
     resource_tags = local.module_tags
