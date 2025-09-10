@@ -41,12 +41,12 @@ data "aws_region" "accepter" {
 locals {
   requester_vpc = {
     id      = var.requester_vpc.id
-    region  = data.aws_region.requester.name
+    region  = data.aws_region.requester.region
     account = data.aws_caller_identity.requester.account_id
   }
   accepter_vpc = {
     id      = var.accepter_vpc.id
-    region  = data.aws_region.accepter.name
+    region  = data.aws_region.accepter.region
     account = data.aws_caller_identity.accepter.account_id
   }
 }
