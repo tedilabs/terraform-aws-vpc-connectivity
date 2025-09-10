@@ -20,7 +20,7 @@ data "aws_region" "this" {}
 locals {
   requester_vpc = {
     id      = var.requester_vpc.id
-    region  = data.aws_region.this.name
+    region  = data.aws_region.this.region
     account = data.aws_caller_identity.this.account_id
   }
   accepter_vpc = {

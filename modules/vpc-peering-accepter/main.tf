@@ -15,18 +15,15 @@ locals {
 }
 
 data "aws_caller_identity" "this" {}
-data "aws_region" "this" {}
 
 data "aws_vpc_peering_connection" "this" {
   id = var.peering_connection.id
 
   vpc_id     = var.peering_connection.requester_vpc.id
-  region     = var.peering_connection.requester_vpc.region
   owner_id   = var.peering_connection.requester_vpc.account
   cidr_block = var.peering_connection.requester_vpc.ipv4_cidr
 
   peer_vpc_id     = var.peering_connection.accepter_vpc.id
-  peer_region     = data.aws_region.this.name
   peer_owner_id   = data.aws_caller_identity.this.account_id
   peer_cidr_block = var.peering_connection.accepter_vpc.ipv4_cidr
 }
