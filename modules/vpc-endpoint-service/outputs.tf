@@ -1,3 +1,8 @@
+output "region" {
+  description = "The AWS region this module resources resides in."
+  value       = aws_vpc_endpoint_service.this.region
+}
+
 output "name" {
   description = "The VPC Endpoint Service name."
   value       = var.name
@@ -52,6 +57,11 @@ output "availability_zones" {
 output "supported_ip_address_types" {
   description = "The supported IP address types."
   value       = var.supported_ip_address_types
+}
+
+output "supported_regions" {
+  description = "The supported AWS regions for the VPC endpoint service."
+  value       = aws_vpc_endpoint_service.this.supported_regions
 }
 
 output "allowed_principals" {

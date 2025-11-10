@@ -1,3 +1,10 @@
+variable "region" {
+  description = "(Optional) The region in which to create the module resources. If not provided, the module resources will be created in the provider's configured region."
+  type        = string
+  default     = null
+  nullable    = true
+}
+
 variable "name" {
   description = "(Required) Desired name for the VPC Endpoint Service."
   type        = string
@@ -55,6 +62,13 @@ variable "supported_ip_address_types" {
   }
 }
 
+variable "supported_regions" {
+  description = "(Optional) A set of supported AWS regions from which service consumers can access the service."
+  type        = set(string)
+  default     = []
+  nullable    = false
+}
+
 variable "allowed_principals" {
   description = "(Optional) A list of the ARNs of principal to allow to discover a VPC endpoint service."
   type        = list(string)
@@ -107,9 +121,6 @@ variable "module_tags_enabled" {
 ###################################################
 # Resource Group
 ###################################################
-
-
-
 
 variable "resource_group" {
   description = <<EOF

@@ -29,6 +29,8 @@ locals {
 # INFO: Use a separate resource
 # - `allowed_principals`
 resource "aws_vpc_endpoint_service" "this" {
+  region = var.region
+
   gateway_load_balancer_arns = (var.type == "GWLB"
     ? var.load_balancers
     : null
@@ -44,6 +46,7 @@ resource "aws_vpc_endpoint_service" "this" {
     for ip_address_type in var.supported_ip_address_types :
     local.ip_address_types[ip_address_type]
   ]
+  supported_regions = var.supported_regions
 
   tags = merge(
     {
@@ -62,6 +65,8 @@ resource "aws_vpc_endpoint_service" "this" {
 resource "aws_vpc_endpoint_service_allowed_principal" "this" {
   for_each = toset(var.allowed_principals)
 
+  region = var.region
+
   vpc_endpoint_service_id = aws_vpc_endpoint_service.this.id
   principal_arn           = each.value
 }
@@ -78,6 +83,8 @@ resource "aws_vpc_endpoint_connection_notification" "this" {
     for config in var.connection_notifications :
     config.name => config
   }
+
+  region = var.region
 
   vpc_endpoint_service_id = aws_vpc_endpoint_service.this.id
 
