@@ -4,7 +4,7 @@
 ![GitHub](https://img.shields.io/github/license/tedilabs/terraform-aws-vpc-connectivity?color=blue&style=flat-square)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=flat-square)](https://github.com/pre-commit/pre-commit)
 
-Terraform module which creates VPC Connectivity related resources (VPC Peering, VPC Private Link, Client VPN, Site-to-Site VPN, DX, VPC Lattice) on AWS.
+Terraform module which creates VPC Connectivity related resources (VPC Peering, DX, VPC Lattice) on AWS.
 
 - [dx-connection](./modules/dx-connection)
 - [dx-gateway](./modules/dx-gateway)
@@ -19,9 +19,6 @@ Terraform module which creates VPC Connectivity related resources (VPC Peering, 
 - [lattice-shared-service-network](./modules/lattice-shared-service-network)
 - [lattice-shared-service](./modules/lattice-shared-service)
 - [reachability-analyzer-path](./modules/reachability-analyzer-path)
-- [vpc-endpoint-service](./modules/vpc-endpoint-service)
-- [vpc-gateway-endpoint](./modules/vpc-gateway-endpoint)
-- [vpc-interface-endpoint](./modules/vpc-interface-endpoint)
 - [vpc-peering](./modules/vpc-peering)
 - [vpc-peering-accepter](./modules/vpc-peering-accepter)
 - [vpc-peering-requester](./modules/vpc-peering-requester)
@@ -33,10 +30,6 @@ Terraform Modules from [this package](https://github.com/tedilabs/terraform-aws-
 
 - **AWS VPC (Virtual Private Cloud)**
   - Peering
-  - PrivateLink
-    - Endpoint Service
-    - Gateway Endpoint
-    - Interface Endpoint
 - **AWS VPC Lattice**
   - Service Network
   - Service Listener
@@ -64,12 +57,6 @@ Terraform Modules from [this package](https://github.com/tedilabs/terraform-aws-
 - [vpc-peering-simple](./examples/vpc-peering-simple)
 - [vpc-peering-cross-region](./examples/vpc-peering-cross-region)
 - [vpc-peering-requester-and-accepter-cross-region](./examples/vpc-peering-requester-and-accepter-cross-region)
-
-### VPC PrivateLink
-
-- [vpc-gateway-endpoint-simple](./examples/vpc-gateway-endpoint-simple)
-- [vpc-interface-endpoint-simple](./examples/vpc-interface-endpoint-simple)
-- [vpc-interface-endpoint-full](./examples/vpc-interface-endpoint-full)
 
 ### VPC Lattice
 

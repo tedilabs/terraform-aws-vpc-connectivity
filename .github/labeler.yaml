@@ -64,21 +64,6 @@
   - any-glob-to-any-file:
     - modules/reachability-analyzer-path/**/*
 
-":floppy_disk: vpc-endpoint-service":
-- changed-files:
-  - any-glob-to-any-file:
-    - modules/vpc-endpoint-service/**/*
-
-":floppy_disk: vpc-gateway-endpoint":
-- changed-files:
-  - any-glob-to-any-file:
-    - modules/vpc-gateway-endpoint/**/*
-
-":floppy_disk: vpc-interface-endpoint":
-- changed-files:
-  - any-glob-to-any-file:
-    - modules/vpc-interface-endpoint/**/*
-
 ":floppy_disk: vpc-peering":
 - changed-files:
   - any-glob-to-any-file:
