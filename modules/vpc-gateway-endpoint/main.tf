@@ -15,6 +15,9 @@ locals {
 }
 
 data "aws_vpc_endpoint_service" "this" {
+  # INFO: https://github.com/hashicorp/terraform-provider-aws/issues/44402
+  # region = var.region
+
   service      = lower(var.service)
   service_type = "Gateway"
 }
@@ -29,12 +32,16 @@ data "aws_vpc_endpoint_service" "this" {
 # - `dns_options`
 # - `ip_address_type`
 # - `private_dns_enabled`
+# - `resource_configuration_arn`
 # - `security_group_ids`
+# - `service_network_arn`
 # - `subnet_ids`
 # INFO: Use a separate resource
 # - `policy`
 # - `route_table_ids`
 resource "aws_vpc_endpoint" "this" {
+  region = var.region
+
   vpc_endpoint_type = "Gateway"
   service_name      = data.aws_vpc_endpoint_service.this.service_name
   vpc_id            = var.vpc_id
@@ -62,6 +69,8 @@ resource "aws_vpc_endpoint" "this" {
 ###################################################
 
 resource "aws_vpc_endpoint_policy" "this" {
+  region = aws_vpc_endpoint.this.region
+
   vpc_endpoint_id = aws_vpc_endpoint.this.id
   policy          = var.policy
 }
@@ -73,6 +82,8 @@ resource "aws_vpc_endpoint_policy" "this" {
 
 resource "aws_vpc_endpoint_route_table_association" "this" {
   count = length(var.route_tables)
+
+  region = aws_vpc_endpoint.this.region
 
   vpc_endpoint_id = aws_vpc_endpoint.this.id
   route_table_id  = var.route_tables[count.index]

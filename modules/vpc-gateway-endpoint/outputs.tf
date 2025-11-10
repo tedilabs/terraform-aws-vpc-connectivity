@@ -1,3 +1,8 @@
+output "region" {
+  description = "The AWS region this module resources resides in."
+  value       = aws_vpc_endpoint.this.region
+}
+
 output "name" {
   description = "The VPC Gateway Endpoint name."
   value       = var.name
