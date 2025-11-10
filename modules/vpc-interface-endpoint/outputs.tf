@@ -1,6 +1,16 @@
+output "region" {
+  description = "The AWS region this module resources resides in."
+  value       = aws_vpc_endpoint.this.region
+}
+
 output "name" {
   description = "The VPC Interface Endpoint name."
   value       = var.name
+}
+
+output "service_region" {
+  description = "The service region of the VPC Interface Endpoint."
+  value       = aws_vpc_endpoint.this.service_region
 }
 
 output "service_name" {
@@ -112,3 +122,11 @@ output "resource_group" {
     )
   )
 }
+
+# output "debug" {
+#   value = {
+#     for k, v in aws_vpc_endpoint.this :
+#     k => v
+#     if !contains(["tags_all", "timeouts", "id", "arn", "security_group_ids", "region", "service_region", "service_name", "private_dns_enabled", "subnet_ids", "vpc_id", "vpc_endpoint_type", "tags", "state", "service_network_arn", "route_table_ids", "resource_configuration_arn", "network_interface_ids", "ip_address_type", "dns_entry", "auto_accept", "owner_id", "cidr_blocks", "prefix_list_id", "policy", "dns_options", "subnet_configuration"], k)
+#   }
+# }

@@ -1,7 +1,21 @@
+variable "region" {
+  description = "(Optional) The region in which to create the module resources. If not provided, the module resources will be created in the provider's configured region."
+  type        = string
+  default     = null
+  nullable    = true
+}
+
 variable "name" {
   description = "(Required) Desired name for the VPC Interface Endpoint."
   type        = string
   nullable    = false
+}
+
+variable "service_region" {
+  description = "(Optional) The AWS region of the VPC Endpoint Service. If specified, the VPC endpoint will connect to the service in the provided region."
+  type        = string
+  default     = null
+  nullable    = true
 }
 
 variable "service_name" {
@@ -27,9 +41,13 @@ variable "network_mapping" {
   description = <<EOF
   (Optional) The configuration for the interface endpoint how routes traffic to targets in which subnets, and in accordance with IP address settings. Choose one subnet for each zone. An endpoint network interface is assigned a private IP address from the IP address range of your subnet, and keeps this IP address until the interface endpoint is deleted. Each key of `network_mapping` is the availability zone id like `apne2-az1`, `use1-az1`. Each block of `network_mapping` as defined below.
     (Required) `subnet` - The id of the subnet of which to attach to the endpoint. You can specify only one subnet per Availability Zone.
+    (Optional) `ipv4_address` - The IPv4 address to assign to the endpoint network interface in the subnet. Defaults to be randomly configured by Amazon.
+    (Optional) `ipv6_address` - The IPv6 address to assign to the endpoint network interface in the subnet. Defaults to be randomly configured by Amazon.
   EOF
   type = map(object({
-    subnet = string
+    subnet       = string
+    ipv4_address = optional(string)
+    ipv6_address = optional(string)
   }))
   default  = {}
   nullable = false
@@ -61,6 +79,11 @@ variable "private_dns" {
   })
   default  = {}
   nullable = false
+
+  validation {
+    condition     = contains(["IPv4", "IPv6", "DUALSTACK", "SERVICE_DEFINED"], var.private_dns.record_ip_type)
+    error_message = "Valid values for `record_ip_type` are `IPv4`, `IPv6`, `DUALSTACK` and `SERVICE_DEFINED`."
+  }
 }
 
 variable "default_security_group" {
@@ -89,9 +112,9 @@ variable "default_security_group" {
       list(object({
         id              = string
         description     = optional(string, "Managed by Terraform.")
-        protocol        = optional(string)
-        from_port       = optional(number)
-        to_port         = optional(number)
+        protocol        = optional(string, "tcp")
+        from_port       = optional(number, 443)
+        to_port         = optional(number, 443)
         ipv4_cidrs      = optional(list(string), [])
         ipv6_cidrs      = optional(list(string), [])
         prefix_lists    = optional(list(string), [])
@@ -178,9 +201,6 @@ variable "module_tags_enabled" {
 ###################################################
 # Resource Group
 ###################################################
-
-
-
 
 variable "resource_group" {
   description = <<EOF
