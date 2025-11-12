@@ -32,20 +32,24 @@ data "aws_caller_identity" "accepter" {
 
 data "aws_region" "requester" {
   provider = aws.requester
+
+  region = var.requester.region
 }
 
 data "aws_region" "accepter" {
   provider = aws.accepter
+
+  region = var.accepter.region
 }
 
 locals {
-  requester_vpc = {
-    id      = var.requester_vpc.id
+  requester = {
+    vpc     = var.requester.vpc
     region  = data.aws_region.requester.region
     account = data.aws_caller_identity.requester.account_id
   }
-  accepter_vpc = {
-    id      = var.accepter_vpc.id
+  accepter = {
+    vpc     = var.accepter.vpc
     region  = data.aws_region.accepter.region
     account = data.aws_caller_identity.accepter.account_id
   }
@@ -62,12 +66,14 @@ locals {
 resource "aws_vpc_peering_connection" "this" {
   provider = aws.requester
 
-  vpc_id      = local.requester_vpc.id
+  region = local.requester.region
+
+  vpc_id      = local.requester.vpc
   auto_accept = false
 
-  peer_vpc_id   = local.accepter_vpc.id
-  peer_region   = local.accepter_vpc.region
-  peer_owner_id = local.accepter_vpc.account
+  peer_vpc_id   = local.accepter.vpc
+  peer_region   = local.accepter.region
+  peer_owner_id = local.accepter.account
 
   tags = merge(
     {
@@ -83,6 +89,8 @@ resource "aws_vpc_peering_connection" "this" {
 resource "aws_vpc_peering_connection_options" "requester" {
   provider = aws.requester
 
+  region = local.requester.region
+
   vpc_peering_connection_id = aws_vpc_peering_connection_accepter.this.id
 
   requester {
@@ -97,6 +105,8 @@ resource "aws_vpc_peering_connection_options" "requester" {
 
 resource "aws_vpc_peering_connection_accepter" "this" {
   provider = aws.accepter
+
+  region = local.accepter.region
 
   vpc_peering_connection_id = aws_vpc_peering_connection.this.id
   auto_accept               = true
@@ -115,6 +125,8 @@ resource "aws_vpc_peering_connection_accepter" "this" {
 resource "aws_vpc_peering_connection_options" "accepter" {
   provider = aws.accepter
 
+  region = local.accepter.region
+
   vpc_peering_connection_id = aws_vpc_peering_connection_accepter.this.id
 
   accepter {
@@ -124,6 +136,10 @@ resource "aws_vpc_peering_connection_options" "accepter" {
 
 data "aws_vpc_peering_connection" "this" {
   provider = aws.accepter
+
+  # INFO: To be implemented
+  # INFO: https://github.com/hashicorp/terraform-provider-aws/issues/42463
+  # region = var.region
 
   id = aws_vpc_peering_connection_accepter.this.id
 }

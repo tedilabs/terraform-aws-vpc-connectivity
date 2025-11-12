@@ -2,25 +2,37 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_vpc" "one" {
-  cidr_block = "10.1.0.0/16"
+module "vpc_one" {
+  source = "tedilabs/network/aws//modules/vpc"
 
-  enable_dns_hostnames = true
-  enable_dns_support   = true
+  name = "one"
+  ipv4_cidrs = [
+    {
+      type = "MANUAL"
+      cidr = "10.1.0.0/16"
+    }
+  ]
 
-  tags = {
-    "Name" = "one"
+  dns_hostnames_enabled = true
+  route53_resolver = {
+    enabled = true
   }
 }
 
-resource "aws_vpc" "two" {
-  cidr_block = "10.2.0.0/16"
+module "vpc_two" {
+  source = "tedilabs/network/aws//modules/vpc"
 
-  enable_dns_hostnames = true
-  enable_dns_support   = true
+  name = "two"
+  ipv4_cidrs = [
+    {
+      type = "MANUAL"
+      cidr = "10.2.0.0/16"
+    }
+  ]
 
-  tags = {
-    "Name" = "two"
+  dns_hostnames_enabled = true
+  route53_resolver = {
+    enabled = true
   }
 }
 
@@ -43,8 +55,8 @@ module "peering" {
 
 
   ## Requester
-  requester_vpc = {
-    id = aws_vpc.one.id
+  requester = {
+    vpc = module.vpc_one.id
   }
   requester_options = {
     allow_remote_vpc_dns_resolution = true
@@ -52,8 +64,8 @@ module "peering" {
 
 
   ## Acccepter
-  accepter_vpc = {
-    id = aws_vpc.two.id
+  accepter = {
+    vpc = module.vpc_two.id
   }
   accepter_options = {
     allow_remote_vpc_dns_resolution = true

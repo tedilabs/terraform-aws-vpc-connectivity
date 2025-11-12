@@ -20,6 +20,8 @@ module "resource_group_requester" {
 
   count = (var.resource_group.enabled && var.module_tags_enabled) ? 1 : 0
 
+  region = local.requester.region
+
   name        = local.resource_group_name
   description = var.resource_group.description
 
@@ -46,10 +48,12 @@ module "resource_group_accepter" {
     var.resource_group.enabled,
     var.module_tags_enabled,
     anytrue([
-      local.requester_vpc.region != local.accepter_vpc.region,
-      local.requester_vpc.account != local.accepter_vpc.account,
+      local.requester.region != local.accepter.region,
+      local.requester.account != local.accepter.account,
     ])
   ]) ? 1 : 0)
+
+  region = local.accepter.region
 
   name        = local.resource_group_name
   description = var.resource_group.description

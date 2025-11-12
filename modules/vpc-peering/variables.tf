@@ -4,14 +4,16 @@ variable "name" {
   nullable    = false
 }
 
-variable "requester_vpc" {
+variable "requester" {
   description = <<EOF
-  (Required) The configuration of the requester VPC. `requester_vpc` as defined below.
-    (Required) `id` - The ID of the requester VPC.
+  (Required) The configuration of the requester VPC. `requester` as defined below.
+    (Required) `vpc` - The ID of the requester VPC.
+    (Optional) `region` - The region of the VPC with which you are creating the VPC Peering request. Defaults to the region of the requester provider.
   account.
   EOF
   type = object({
-    id = string
+    vpc    = string
+    region = optional(string)
   })
   nullable = false
 }
@@ -29,14 +31,16 @@ variable "requester_options" {
   nullable = false
 }
 
-variable "accepter_vpc" {
+variable "accepter" {
   description = <<EOF
-  (Required) The configuration of the accepter VPC. `accepter_vpc` as defined below.
-    (Required) `id` - The ID of the VPC with which you are creating the VPC Peering Connection.
+  (Required) The configuration of the accepter VPC. `accepter` as defined below.
+    (Required) `vpc` - The ID of the VPC with which you are creating the VPC Peering Connection.
+    (Optional) `region` - The region of the VPC with which you are accepting the VPC Peering request. Defaults to the region of the accepter provider.
   account.
   EOF
   type = object({
-    id = string
+    vpc    = string
+    region = optional(string)
   })
   nullable = false
 }
