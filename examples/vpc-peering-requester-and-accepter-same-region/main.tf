@@ -2,12 +2,10 @@ provider "aws" {
   region = "us-east-1"
 }
 
-module "vpc_use1" {
+module "vpc_one" {
   source = "tedilabs/network/aws//modules/vpc"
 
-  region = "us-east-1"
-
-  name = "use1"
+  name = "one"
   ipv4_cidrs = [
     {
       type = "MANUAL"
@@ -21,12 +19,10 @@ module "vpc_use1" {
   }
 }
 
-module "vpc_apne2" {
+module "vpc_two" {
   source = "tedilabs/network/aws//modules/vpc"
 
-  region = "ap-northeast-2"
-
-  name = "apne2"
+  name = "two"
   ipv4_cidrs = [
     {
       type = "MANUAL"
@@ -50,16 +46,13 @@ module "requester" {
   # source  = "tedilabs/vpc-connectivity/aws//modules/vpc-peering-requester"
   # version = "~> 0.2.0"
 
-  region = "us-east-1"
-
-  name = "use1/apne2"
+  name = "one/two"
 
   requester = {
-    vpc = module.vpc_use1.id
+    vpc = module.vpc_one.id
   }
   accepter = {
-    vpc    = module.vpc_apne2.id
-    region = "ap-northeast-2"
+    vpc = module.vpc_two.id
   }
 
   allow_remote_vpc_dns_resolution = false
@@ -79,9 +72,7 @@ module "accepter" {
   # source  = "tedilabs/vpc-connectivity/aws//modules/vpc-peering-accepter"
   # version = "~> 0.2.0"
 
-  region = "ap-northeast-2"
-
-  name = "use1/apne2"
+  name = "one/two"
 
   peering_connection = {
     id = module.requester.id

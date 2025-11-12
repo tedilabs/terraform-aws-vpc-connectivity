@@ -1,26 +1,33 @@
+variable "region" {
+  description = "(Optional) The region in which to create the module resources. If not provided, the module resources will be created in the provider's configured region."
+  type        = string
+  default     = null
+  nullable    = true
+}
+
 variable "peering_connection" {
   description = <<EOF
   (Required) The information of the VPC Peering Connection to accept. The given filters must match exactly one VPC peering connection. `peering_connection` as defined below.
     (Optional) `id` - The VPC Peering Connection ID to manage.
-    (Optional) `requester_vpc` - The information of the requester VPC. `requester_vpc` as defined below.
-      (Optional) `id` - The ID of the requester VPC.
+    (Optional) `requester` - The information of the requester VPC. `requester` as defined below.
+      (Optional) `vpc` - The ID of the requester VPC.
       (Optional) `region` - The region of the VPC with which you are creating the VPC Peering Connection.
       (Optional) `account` - The AWS account ID of the owner of the peer VPC.
-    (Optional) `accepter_vpc` - The information of the accepter VPC. `accepter_vpc` as defined below.
-      (Optional) `id` - The ID of the accepter VPC.
+    (Optional) `accepter` - The information of the accepter VPC. `accepter_vpc` as defined below.
+      (Optional) `vpc` - The ID of the accepter VPC.
   account.
   EOF
   type = object({
     id = optional(string)
-    requester_vpc = optional(object({
-      id      = optional(string)
+    requester = optional(object({
+      vpc     = optional(string)
       region  = optional(string)
       account = optional(string)
 
       ipv4_cidr = optional(string)
     }), {})
-    accepter_vpc = optional(object({
-      id = optional(string)
+    accepter = optional(object({
+      vpc = optional(string)
 
       ipv4_cidr = optional(string)
     }), {})

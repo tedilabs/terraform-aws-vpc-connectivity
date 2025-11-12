@@ -17,31 +17,35 @@ locals {
 data "aws_caller_identity" "this" {}
 
 data "aws_vpc_peering_connection" "this" {
+  # INFO: To be implemented
+  # INFO: https://github.com/hashicorp/terraform-provider-aws/issues/42463
+  # region = var.region
+
   id = var.peering_connection.id
 
-  vpc_id     = var.peering_connection.requester_vpc.id
-  owner_id   = var.peering_connection.requester_vpc.account
-  cidr_block = var.peering_connection.requester_vpc.ipv4_cidr
+  vpc_id     = var.peering_connection.requester.vpc
+  owner_id   = var.peering_connection.requester.account
+  cidr_block = var.peering_connection.requester.ipv4_cidr
 
-  peer_vpc_id     = var.peering_connection.accepter_vpc.id
+  peer_vpc_id     = var.peering_connection.accepter.vpc
   peer_owner_id   = data.aws_caller_identity.this.account_id
-  peer_cidr_block = var.peering_connection.accepter_vpc.ipv4_cidr
+  peer_cidr_block = var.peering_connection.accepter.ipv4_cidr
 }
 
 locals {
-  requester_vpc = {
+  requester = {
     account = data.aws_vpc_peering_connection.this.owner_id
-    region  = data.aws_vpc_peering_connection.this.region
-    id      = aws_vpc_peering_connection_accepter.this.vpc_id
+    region  = data.aws_vpc_peering_connection.this.requester_region
+    vpc     = aws_vpc_peering_connection_accepter.this.vpc_id
     ipv4_cidrs = [
       for cidr in data.aws_vpc_peering_connection.this.cidr_block_set :
       cidr.cidr_block
     ]
   }
-  accepter_vpc = {
+  accepter = {
     account = aws_vpc_peering_connection_accepter.this.peer_owner_id
     region  = aws_vpc_peering_connection_accepter.this.peer_region
-    id      = aws_vpc_peering_connection_accepter.this.peer_vpc_id
+    vpc     = aws_vpc_peering_connection_accepter.this.peer_vpc_id
     ipv4_cidrs = [
       for cidr in data.aws_vpc_peering_connection.this.peer_cidr_block_set :
       cidr.cidr_block
@@ -55,6 +59,8 @@ locals {
 ###################################################
 
 resource "aws_vpc_peering_connection_accepter" "this" {
+  region = var.region
+
   vpc_peering_connection_id = data.aws_vpc_peering_connection.this.id
   auto_accept               = true
 
@@ -70,6 +76,8 @@ resource "aws_vpc_peering_connection_accepter" "this" {
 # INFO: Not supported attributes
 # - `requester`
 resource "aws_vpc_peering_connection_options" "this" {
+  region = var.region
+
   vpc_peering_connection_id = aws_vpc_peering_connection_accepter.this.id
 
   accepter {

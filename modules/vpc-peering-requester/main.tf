@@ -30,6 +30,7 @@ locals {
     region  = coalesce(var.accepter.region, local.requester.region)
     account = coalesce(var.accepter.account, local.requester.account)
   }
+  auto_accept = local.requester.account == local.accepter.account && local.requester.region == local.accepter.region
 }
 
 
@@ -44,10 +45,10 @@ resource "aws_vpc_peering_connection" "this" {
   region = var.region
 
   vpc_id      = local.requester.vpc
-  auto_accept = local.requester.account == local.accepter.account && local.requester.region == local.accepter.region
+  auto_accept = local.auto_accept
 
   peer_vpc_id   = local.accepter.vpc
-  peer_region   = local.accepter.region
+  peer_region   = local.auto_accept ? null : local.accepter.region
   peer_owner_id = local.accepter.account
 
   tags = merge(

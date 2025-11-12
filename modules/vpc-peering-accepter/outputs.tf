@@ -1,3 +1,8 @@
+output "region" {
+  description = "The AWS region this module resources resides in."
+  value       = aws_vpc_peering_connection_accepter.this.region
+}
+
 output "name" {
   description = "The VPC Peering name."
   value       = var.name
@@ -13,14 +18,14 @@ output "status" {
   value       = aws_vpc_peering_connection_accepter.this.accept_status
 }
 
-output "requester_vpc" {
+output "requester" {
   description = "The requester information including AWS Account ID, Region, VPC ID."
-  value       = local.requester_vpc
+  value       = local.requester
 }
 
-output "accepter_vpc" {
+output "accepter" {
   description = "The accepter information including AWS Account ID, Region, VPC ID."
-  value       = local.accepter_vpc
+  value       = local.accepter
 }
 
 output "allow_remote_vpc_dns_resolution" {
