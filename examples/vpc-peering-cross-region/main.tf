@@ -1,38 +1,39 @@
 provider "aws" {
-  alias = "use1"
-
   region = "us-east-1"
 }
 
-provider "aws" {
-  alias = "apne2"
+module "vpc_one" {
+  source = "tedilabs/network/aws//modules/vpc"
 
-  region = "ap-northeast-2"
-}
+  name = "one"
+  ipv4_cidrs = [
+    {
+      type = "MANUAL"
+      cidr = "10.1.0.0/16"
+    }
+  ]
 
-resource "aws_vpc" "use1" {
-  provider = aws.use1
-
-  cidr_block = "10.1.0.0/16"
-
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-
-  tags = {
-    "Name" = "use1"
+  dns_hostnames_enabled = true
+  route53_resolver = {
+    enabled = true
   }
 }
 
-resource "aws_vpc" "apne2" {
-  provider = aws.apne2
+module "vpc_two" {
+  source = "tedilabs/network/aws//modules/vpc"
 
-  cidr_block = "10.2.0.0/16"
+  region = "ap-northeast-2"
+  name   = "two"
+  ipv4_cidrs = [
+    {
+      type = "MANUAL"
+      cidr = "10.2.0.0/16"
+    }
+  ]
 
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-
-  tags = {
-    "Name" = "apne2"
+  dns_hostnames_enabled = true
+  route53_resolver = {
+    enabled = true
   }
 }
 
@@ -47,16 +48,16 @@ module "peering" {
   # version = "~> 0.2.0"
 
   providers = {
-    aws.requester = aws.use1
-    aws.accepter  = aws.apne2
+    aws.requester = aws
+    aws.accepter  = aws
   }
 
   name = "use1/apne2"
 
 
   ## Requester
-  requester_vpc = {
-    id = aws_vpc.use1.id
+  requester = {
+    vpc = module.vpc_one.id
   }
   requester_options = {
     allow_remote_vpc_dns_resolution = true
@@ -64,8 +65,9 @@ module "peering" {
 
 
   ## Acccepter
-  accepter_vpc = {
-    id = aws_vpc.apne2.id
+  accepter = {
+    vpc    = module.vpc_two.id
+    region = "ap-northeast-2"
   }
   accepter_options = {
     allow_remote_vpc_dns_resolution = true

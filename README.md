@@ -57,6 +57,7 @@ Terraform Modules from [this package](https://github.com/tedilabs/terraform-aws-
 - [vpc-peering-simple](./examples/vpc-peering-simple)
 - [vpc-peering-cross-region](./examples/vpc-peering-cross-region)
 - [vpc-peering-requester-and-accepter-cross-region](./examples/vpc-peering-requester-and-accepter-cross-region)
+- [vpc-peering-requester-and-accepter-same-region](./examples/vpc-peering-requester-and-accepter-same-region)
 
 ### VPC Lattice
 
