@@ -4,7 +4,7 @@
 ![GitHub](https://img.shields.io/github/license/tedilabs/terraform-aws-vpc-connectivity?color=blue&style=flat-square)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=flat-square)](https://github.com/pre-commit/pre-commit)
 
-Terraform module which creates VPC Connectivity related resources (VPC Peering, DX, VPC Lattice) on AWS.
+Terraform module which creates VPC Connectivity related resources (DX, VPC Lattice) on AWS.
 
 - [dx-connection](./modules/dx-connection)
 - [dx-gateway](./modules/dx-gateway)
@@ -19,17 +19,12 @@ Terraform module which creates VPC Connectivity related resources (VPC Peering, 
 - [lattice-shared-service-network](./modules/lattice-shared-service-network)
 - [lattice-shared-service](./modules/lattice-shared-service)
 - [reachability-analyzer-path](./modules/reachability-analyzer-path)
-- [vpc-peering](./modules/vpc-peering)
-- [vpc-peering-accepter](./modules/vpc-peering-accepter)
-- [vpc-peering-requester](./modules/vpc-peering-requester)
 
 
 ## Target AWS Services
 
 Terraform Modules from [this package](https://github.com/tedilabs/terraform-aws-vpc-connectivity) were written to manage the following AWS Services with Terraform.
 
-- **AWS VPC (Virtual Private Cloud)**
-  - Peering
 - **AWS VPC Lattice**
   - Service Network
   - Service Listener
@@ -51,13 +46,6 @@ Terraform Modules from [this package](https://github.com/tedilabs/terraform-aws-
 
 
 ## Examples
-
-### VPC Peering
-
-- [vpc-peering-simple](./examples/vpc-peering-simple)
-- [vpc-peering-cross-region](./examples/vpc-peering-cross-region)
-- [vpc-peering-requester-and-accepter-cross-region](./examples/vpc-peering-requester-and-accepter-cross-region)
-- [vpc-peering-requester-and-accepter-same-region](./examples/vpc-peering-requester-and-accepter-same-region)
 
 ### VPC Lattice
 
