@@ -1,31 +1,38 @@
+variable "region" {
+  description = "(Optional) The region in which to create the module resources. If not provided, the module resources will be created in the provider's configured region."
+  type        = string
+  default     = null
+  nullable    = true
+}
+
 variable "name" {
   description = "(Required) Desired name for the VPC Peering resources."
   type        = string
   nullable    = false
 }
 
-variable "requester_vpc" {
+variable "requester" {
   description = <<EOF
-  (Required) The configuration of the requester VPC. `requester_vpc` as defined below.
-    (Required) `id` - The ID of the requester VPC.
+  (Required) The configuration of the requester VPC. `requester` as defined below.
+    (Required) `vpc` - The ID of the requester VPC.
   account.
   EOF
   type = object({
-    id = string
+    vpc = string
   })
   nullable = false
 }
 
-variable "accepter_vpc" {
+variable "accepter" {
   description = <<EOF
-  (Required) The configuration of the accepter VPC. `accepter_vpc` as defined below.
-    (Required) `id` - The ID of the VPC with which you are creating the VPC Peering Connection.
+  (Required) The configuration of the accepter VPC. `accepter` as defined below.
+    (Required) `vpc` - The ID of the VPC with which you are creating the VPC Peering Connection.
     (Optional) `region` - The region of the VPC with which you are creating the VPC Peering Connection. Defaults to the region of the current provider.
     (Optional) `account` - The AWS account ID of the owner of the peer VPC. Defaults to the current
   account.
   EOF
   type = object({
-    id      = string
+    vpc     = string
     region  = optional(string)
     account = optional(string)
   })
@@ -57,9 +64,6 @@ variable "module_tags_enabled" {
 ###################################################
 # Resource Group
 ###################################################
-
-
-
 
 variable "resource_group" {
   description = <<EOF

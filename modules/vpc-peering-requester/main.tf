@@ -15,18 +15,20 @@ locals {
 }
 
 data "aws_caller_identity" "this" {}
-data "aws_region" "this" {}
+data "aws_region" "this" {
+  region = var.region
+}
 
 locals {
-  requester_vpc = {
-    id      = var.requester_vpc.id
+  requester = {
+    vpc     = var.requester.vpc
     region  = data.aws_region.this.region
     account = data.aws_caller_identity.this.account_id
   }
-  accepter_vpc = {
-    id      = var.accepter_vpc.id
-    region  = coalesce(var.accepter_vpc.region, local.requester_vpc.region)
-    account = coalesce(var.accepter_vpc.account, local.requester_vpc.account)
+  accepter = {
+    vpc     = var.accepter.vpc
+    region  = coalesce(var.accepter.region, local.requester.region)
+    account = coalesce(var.accepter.account, local.requester.account)
   }
 }
 
@@ -39,12 +41,14 @@ locals {
 # - `accepter`
 # - `requester`
 resource "aws_vpc_peering_connection" "this" {
-  vpc_id      = local.requester_vpc.id
-  auto_accept = false
+  region = var.region
 
-  peer_vpc_id   = local.accepter_vpc.id
-  peer_region   = local.accepter_vpc.region
-  peer_owner_id = local.accepter_vpc.account
+  vpc_id      = local.requester.vpc
+  auto_accept = local.requester.account == local.accepter.account && local.requester.region == local.accepter.region
+
+  peer_vpc_id   = local.accepter.vpc
+  peer_region   = local.accepter.region
+  peer_owner_id = local.accepter.account
 
   tags = merge(
     {
@@ -60,6 +64,8 @@ resource "aws_vpc_peering_connection" "this" {
 resource "aws_vpc_peering_connection_options" "this" {
   count = var.allow_remote_vpc_dns_resolution ? 1 : 0
 
+  region = var.region
+
   vpc_peering_connection_id = aws_vpc_peering_connection.this.id
 
   requester {
@@ -68,5 +74,9 @@ resource "aws_vpc_peering_connection_options" "this" {
 }
 
 data "aws_vpc_peering_connection" "this" {
+  # INFO: To be implemented
+  # INFO: https://github.com/hashicorp/terraform-provider-aws/issues/42463
+  # region = var.region
+
   id = aws_vpc_peering_connection.this.id
 }
