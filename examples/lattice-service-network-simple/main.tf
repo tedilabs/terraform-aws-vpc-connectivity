@@ -10,7 +10,7 @@ provider "aws" {
 module "service_network" {
   source = "../../modules/lattice-service-network"
   # source  = "tedilabs/vpc-connectivity/aws//modules/lattice-service-network"
-  # version = "~> 0.2.0"
+  # version = "~> 0.9.0"
 
   name      = "test"
   auth_type = "NONE"

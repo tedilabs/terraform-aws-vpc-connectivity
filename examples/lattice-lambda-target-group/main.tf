@@ -10,7 +10,7 @@ provider "aws" {
 module "target_group" {
   source = "../../modules/lattice-lambda-target-group"
   # source  = "tedilabs/vpc-connectivity/aws//modules/lattice-lambda-target-group"
-  # version = "~> 0.2.0"
+  # version = "~> 0.9.0"
 
   name = "lambda-hello"
 

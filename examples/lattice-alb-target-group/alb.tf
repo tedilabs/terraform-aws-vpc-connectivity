@@ -4,7 +4,7 @@
 
 module "alb" {
   source  = "tedilabs/load-balancer/aws//modules/alb"
-  version = "~> 1.3.0"
+  version = "~> 1.5.0"
 
   name = "alb-for-vpc-lattice"
 
@@ -14,7 +14,7 @@ module "alb" {
   network_mapping = {
     for az, subnet in data.aws_subnet.default :
     az => {
-      subnet_id = subnet.id
+      subnet = subnet.id
     }
   }
 
@@ -22,7 +22,7 @@ module "alb" {
     name        = "alb-for-vpc-lattice"
     description = "Managed by Terraform."
 
-    ingress_cidrs = ["10.0.0.0/8", "172.31.0.0/16"]
+    listener_ingress_ipv4_cidrs = ["10.0.0.0/8", "172.31.0.0/16"]
   }
   security_groups = []
 
