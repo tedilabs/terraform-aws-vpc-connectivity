@@ -21,7 +21,7 @@ data "aws_subnet" "default" {
 module "target_group" {
   source = "../../modules/lattice-alb-target-group"
   # source  = "tedilabs/vpc-connectivity/aws//modules/lattice-alb-target-group"
-  # version = "~> 0.2.0"
+  # version = "~> 0.9.0"
 
   name = "alb-hello"
 

@@ -28,7 +28,7 @@ This module creates following resources.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | tedilabs/misc/aws//modules/resource-group | ~> 0.10.0 |
-| <a name="module_share"></a> [share](#module\_share) | tedilabs/account/aws//modules/ram-share | ~> 0.27.0 |
+| <a name="module_share"></a> [share](#module\_share) | tedilabs/organization/aws//modules/ram-share | ~> 0.7.0 |
 
 ## Resources
 

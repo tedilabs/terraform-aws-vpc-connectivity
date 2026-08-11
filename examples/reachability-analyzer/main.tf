@@ -20,7 +20,7 @@ data "aws_internet_gateway" "default" {
 module "reachability_analyzer_path__success" {
   source = "../../modules/reachability-analyzer-path"
   # source  = "tedilabs/vpc-connectivity/aws//modules/reachability-analyzer-path"
-  # version = "~> 0.1.0"
+  # version = "~> 0.9.0"
 
   name = "test-success"
 
@@ -47,7 +47,7 @@ module "reachability_analyzer_path__success" {
 module "reachability_analyzer_path__fail" {
   source = "../../modules/reachability-analyzer-path"
   # source  = "tedilabs/vpc-connectivity/aws//modules/reachability-analyzer-path"
-  # version = "~> 0.1.0"
+  # version = "~> 0.9.0"
 
   name = "test-fail"
 
@@ -95,7 +95,7 @@ data "aws_ami" "ubuntu" {
 
 module "security_group" {
   source  = "tedilabs/network/aws//modules/security-group"
-  version = "~> 0.27.0"
+  version = "~> 1.2.0"
 
   name = "reachability-analyzer-test"
 
@@ -103,20 +103,18 @@ module "security_group" {
 
   ingress_rules = [
     {
-      id          = "http/all"
-      protocol    = "tcp"
-      from_port   = 80
-      to_port     = 80
-      cidr_blocks = ["0.0.0.0/0"]
+      id         = "http/all"
+      protocol   = "tcp"
+      from_port  = 80
+      to_port    = 80
+      ipv4_cidrs = ["0.0.0.0/0"]
     }
   ]
   egress_rules = [
     {
-      id          = "all/all"
-      protocol    = "-1"
-      from_port   = 0
-      to_port     = 0
-      cidr_blocks = ["0.0.0.0/0"]
+      id         = "all/all"
+      protocol   = "-1"
+      ipv4_cidrs = ["0.0.0.0/0"]
     }
   ]
 

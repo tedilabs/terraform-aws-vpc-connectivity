@@ -1,28 +1,39 @@
+locals {
+  ram_share_name_prefix = join(".", [
+    "vpc-lattice",
+    "service",
+    replace(var.name, "/[^a-zA-Z0-9_\\.-]/", "-"),
+  ])
+}
+
+
 ###################################################
 # Resource Sharing by RAM (Resource Access Manager)
 ###################################################
 
 module "share" {
-  source  = "tedilabs/account/aws//modules/ram-share"
-  version = "~> 0.27.0"
+  source  = "tedilabs/organization/aws//modules/ram-share"
+  version = "~> 0.7.0"
 
   for_each = {
     for share in var.shares :
     share.name => share
   }
 
-  name = "vpc-lattice.service.${var.name}.${each.key}"
+  name = "${local.ram_share_name_prefix}.${each.key}"
 
-  resources = [
-    aws_vpclattice_service.this.arn
-  ]
+  resources = {
+    (var.name) = aws_vpclattice_service.this.arn,
+  }
   permissions = each.value.permissions
 
   external_principals_allowed = each.value.external_principals_allowed
   principals                  = each.value.principals
 
-  resource_group_enabled = false
-  module_tags_enabled    = false
+  resource_group = {
+    enabled = false
+  }
+  module_tags_enabled = false
 
   tags = merge(
     local.module_tags,

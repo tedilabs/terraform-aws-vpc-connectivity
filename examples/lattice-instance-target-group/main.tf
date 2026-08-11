@@ -21,7 +21,7 @@ data "aws_subnet" "default" {
 module "target_group" {
   source = "../../modules/lattice-instance-target-group"
   # source  = "tedilabs/vpc-connectivity/aws//modules/lattice-instance-target-group"
-  # version = "~> 0.2.0"
+  # version = "~> 0.9.0"
 
   name = "instance-hello"
 
