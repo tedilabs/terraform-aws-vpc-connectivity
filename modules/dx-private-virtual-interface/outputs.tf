@@ -19,7 +19,7 @@ output "connection" {
 }
 
 output "gateway" {
-  description = "The ID of the Direct Connect connection."
+  description = "The gateway configuration (type and ID) of the virtual interface."
   value = {
     type = var.gateway.type
     id = {

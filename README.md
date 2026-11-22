@@ -21,7 +21,7 @@ Terraform Modules from [this package](https://github.com/tedilabs/terraform-aws-
   - Gateway
   - Virtual Interface
     - Private Virtual Interface
-- **AWS Network Manager**
+- **Amazon VPC**
   - Reachability Analyzer
     - Path
     - Analysis
@@ -29,7 +29,7 @@ Terraform Modules from [this package](https://github.com/tedilabs/terraform-aws-
 
 ## Examples
 
-### Network Manager
+### Amazon VPC
 
 - [reachability-analyzer](./examples/reachability-analyzer)
 

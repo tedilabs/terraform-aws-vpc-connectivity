@@ -62,7 +62,7 @@ This module creates following resources.
 | <a name="output_aws_device"></a> [aws\_device](#output\_aws\_device) | The Direct Connect endpoint on which the virtual interface terminates. |
 | <a name="output_bgp_peerings"></a> [bgp\_peerings](#output\_bgp\_peerings) | The configuration for BGP(Border Gateway Protocol) Peerings of the virtual interface.<br/>    `address_family` - The address family for the BGP peer.<br/>    `bgp_asn` - The Border Gateway Protocol (BGP) Autonomous System Number (ASN) of your on-premises router.<br/>    `bgp_auth_key` - The password that will be used to authenticate the BGP session.<br/>    `amazon_address` - The BGP peer IP configured on the AWS endpoint.<br/>    `customer_address` - The BGP peer IP configured on your endpoint. |
 | <a name="output_connection"></a> [connection](#output\_connection) | The ID of the Direct Connect connection. |
-| <a name="output_gateway"></a> [gateway](#output\_gateway) | The ID of the Direct Connect connection. |
+| <a name="output_gateway"></a> [gateway](#output\_gateway) | The gateway configuration (type and ID) of the virtual interface. |
 | <a name="output_id"></a> [id](#output\_id) | The ID of the virtual interface. |
 | <a name="output_jumbo_frame_capable"></a> [jumbo\_frame\_capable](#output\_jumbo\_frame\_capable) | Whether jumbo frames (9001 MTU) are supported. |
 | <a name="output_jumbo_frame_enabled"></a> [jumbo\_frame\_enabled](#output\_jumbo\_frame\_enabled) | Whether jumbo frames (9001 MTU) are enabled. |
