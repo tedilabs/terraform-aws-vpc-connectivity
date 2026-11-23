@@ -61,7 +61,7 @@ variable "sitelink_enabled" {
 variable "bgp_peerings" {
   description = <<EOF
   (Required) The configuration for BGP(Border Gateway Protocol) Peerings of the virtual interface. You must create a BGP peer for the corresponding address family (IPv4/IPv6) in order to access AWS resources that also use that address family. If logical redundancy is not supported by the connection, interconnect, or LAG, the BGP peer cannot be in the same address family as an existing BGP peer on the virtual interface. When creating a IPv6 BGP peer, omit the Amazon address and customer address. IPv6 addresses are automatically assigned from the Amazon pool of IPv6 addresses; you cannot specify custom IPv6 addresses. Each block of `bgp_peerings` as defined below.
-    (Required) `address_family` - The address family for the BGP peer. Valid values are `IPV4` or `IPV6`. Defaults to `IPV4`.
+    (Required) `address_family` - The address family for the BGP peer. Valid values are `IPV4` or `IPV6`.
     (Required) `bgp_asn` - The Border Gateway Protocol (BGP) Autonomous System Number (ASN) of your on-premises router for the new virtual interface. Valid ranges are 1 - 2147483647.
     (Optional) `bgp_auth_key` - The password that will be used to authenticate the BGP session.
     (Optional) `amazon_address` - The BGP peer IP configured on the AWS endpoint. Required for IPv4 BGP peering.
